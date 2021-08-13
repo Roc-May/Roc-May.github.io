@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>怎么写博客</title>
+      <link href="2021/08/13/zen-me-xie-bo-ke/"/>
+      <url>2021/08/13/zen-me-xie-bo-ke/</url>
+      
+        <content type="html"><![CDATA[<p>正文<br>首先在hexo目录下（也就是myblog目录）下git bash，<br>之后在bash中输入hexo clean<br>hexo new “xxxxxx”<br>然后用markdown编辑器在_post文件夹中编辑markdown文件<br>编辑完成之后<br>在bash中输入hexo g<br>hexo s<br>如果默认的4000端口被占用<br>bash中输入hexo server -p 5000<br>则可以通过5000端口访问网站<br>检查无误后<br>通过hexo d（或者hexo deploy）将网页发布到网站上。<br>常用的一些命令有：<br>hexo new “name”       # 新建文章<br>hexo new page “name”  # 新建页面<br>hexo g                # 生成页面<br>hexo d                # 部署<br>hexo g -d             # 生成页面并部署<br>hexo s                # 本地预览<br>hexo clean            # 清除缓存和已生成的静态文件<br>hexo help             # 帮助</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="2021/01/14/hello-world/"/>
       <url>2021/01/14/hello-world/</url>
