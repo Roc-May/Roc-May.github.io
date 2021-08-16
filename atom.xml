@@ -6,7 +6,7 @@
   <link href="https://roc-may.github.io/atom.xml" rel="self"/>
   
   <link href="https://roc-may.github.io/"/>
-  <updated>2021-01-14T12:19:51.316Z</updated>
+  <updated>2021-08-16T08:36:49.061Z</updated>
   <id>https://roc-may.github.io/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>基于python的文件传输助手</title>
+    <link href="https://roc-may.github.io/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/"/>
+    <id>https://roc-may.github.io/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/</id>
+    <published>2021-08-16T07:56:07.220Z</published>
+    <updated>2021-08-16T08:36:49.061Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h2&gt;&lt;h3 id=&quot;操作环境&quot;&gt;&lt;a href=&quot;#操作环境&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="python、文件传输" scheme="https://roc-may.github.io/tags/python%E3%80%81%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>将csv转为对应的灰度图</title>
+    <link href="https://roc-may.github.io/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/"/>
+    <id>https://roc-may.github.io/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/</id>
+    <published>2021-08-16T07:50:47.866Z</published>
+    <updated>2021-08-16T08:36:48.385Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h2&gt;&lt;h3 id=&quot;前述&quot;&gt;&lt;a href=&quot;#前述&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="python" scheme="https://roc-may.github.io/tags/python/"/>
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>

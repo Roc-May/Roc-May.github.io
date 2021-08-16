@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, Gxp">
+    <meta name="keywords" content="将csv转为对应的灰度图, Gxp">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | Gxp&#39;s blogs</title>
+    <title>将csv转为对应的灰度图 | Gxp&#39;s blogs</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -267,12 +267,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title">将csv转为对应的灰度图</h1>
                 </div>
             </div>
         </div>
@@ -386,9 +386,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/python/">
+                                <span class="chip bg-color">python</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -400,7 +404,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-01-14
+                    2021-08-16
                 </div>
                 
 
@@ -421,15 +425,215 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server</code></pre>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate</code></pre>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy</code></pre>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+                <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h3 id="前述"><a href="#前述" class="headerlink" title="前述"></a>前述</h3><p>听着好像有点多余，原本就是要把灰度图转为csv来读取。。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>代码功能详见注释</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> os
+<span class="token keyword">from</span> PIL <span class="token keyword">import</span> Image
+<span class="token keyword">import</span> cv2
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token keyword">from</span> tqdm <span class="token keyword">import</span> tqdm
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+<span class="token comment" spellcheck="true">#from config import *</span>
+<span class="token keyword">import</span> dlib
+<span class="token comment" spellcheck="true">#********************check over</span>
+<span class="token comment" spellcheck="true"># 目的是实现从csv到jpg的转换</span>
+<span class="token comment" spellcheck="true"># conver_csv_to_jpg是实现转换</span>
+<span class="token comment" spellcheck="true"># crop_face_area是实现ROI区域的提取</span>
+
+
+<span class="token keyword">def</span> <span class="token function">convert_csv_to_jpg</span><span class="token punctuation">(</span>csv_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment" spellcheck="true"># 加载opencv的人脸识别文件</span>
+    <span class="token comment" spellcheck="true"># 'haarcascade_frontalface_alt' 的准确度更高，但是速度更慢</span>
+    <span class="token comment" spellcheck="true"># 'haarcascade_frontalface_default' 准确度较低，但是更快而且更轻巧</span>
+    <span class="token comment" spellcheck="true"># detector = cv2.CascadeClassifier(haarcascade_frontalface_alt)</span>
+    detector <span class="token operator">=</span> dlib<span class="token punctuation">.</span>get_frontal_face_detector<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    landmark_predictor <span class="token operator">=</span> dlib<span class="token punctuation">.</span>shape_predictor<span class="token punctuation">(</span>
+        <span class="token string">'D:\\realsense_window\\CNN-Facial-Expression-Recognition-master\\data\\shape_predictor_68_face_landmarks.dat'</span><span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true"># 将csv通过PIL转换为jpg</span>
+    data <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span>csv_path<span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">"ISO-8859-1"</span><span class="token punctuation">)</span>
+
+    train_path_data <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;'path': [], 'emotion': []&amp;#125;</span>
+    valid_path_data <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;'path': [], 'emotion': []&amp;#125;</span>
+    test_path_data <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;'path': [], 'emotion': []&amp;#125;</span>
+
+    train_landmark <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    valid_landmark <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    test_landmark <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+    <span class="token keyword">if</span> <span class="token operator">not</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span>TRAIN_DIR<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        os<span class="token punctuation">.</span>mkdir<span class="token punctuation">(</span>TRAIN_DIR<span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> <span class="token operator">not</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span>TEST_DIR<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        os<span class="token punctuation">.</span>mkdir<span class="token punctuation">(</span>TEST_DIR<span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> <span class="token operator">not</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span>VALID_DIR<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        os<span class="token punctuation">.</span>mkdir<span class="token punctuation">(</span>VALID_DIR<span class="token punctuation">)</span>
+
+    total <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token comment" spellcheck="true"># 将cssv文件中的数据如emotion，pixel，usage打包成之后读取，同时需要处理多个数据的常用手段</span>
+    <span class="token keyword">for</span> label<span class="token punctuation">,</span> pixels<span class="token punctuation">,</span> usage <span class="token keyword">in</span> tqdm<span class="token punctuation">(</span>zip<span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token string">'emotion'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> data<span class="token punctuation">[</span><span class="token string">'pixels'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> data<span class="token punctuation">[</span><span class="token string">'Usage'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+
+        <span class="token comment" spellcheck="true"># 修改文件为指定大小</span>
+        img <span class="token operator">=</span> np<span class="token punctuation">.</span>asarray<span class="token punctuation">(</span>pixels<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span>
+            np<span class="token punctuation">.</span>int32<span class="token punctuation">)</span><span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token punctuation">[</span>img_size<span class="token punctuation">,</span> img_size<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># 裁剪文件为所需要的人脸部分</span>
+        all_faces<span class="token punctuation">,</span> all_landmarks <span class="token operator">=</span> crop_face_area<span class="token punctuation">(</span>
+            detector<span class="token punctuation">,</span> landmark_predictor<span class="token punctuation">,</span> img<span class="token punctuation">,</span> img_size<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> all_faces <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+            <span class="token keyword">continue</span>
+        <span class="token keyword">for</span> img<span class="token punctuation">,</span> landmarks <span class="token keyword">in</span> zip<span class="token punctuation">(</span>all_faces<span class="token punctuation">,</span> all_landmarks<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true"># fromarray可以说明img此时为np的矩阵格式，Image中的fromarray这个函数实现从矩阵保存的像素值到照片的转换</span>
+            img <span class="token operator">=</span> Image<span class="token punctuation">.</span>fromarray<span class="token punctuation">(</span>img<span class="token punctuation">)</span><span class="token punctuation">.</span>convert<span class="token punctuation">(</span>mode<span class="token operator">=</span><span class="token string">'L'</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 转为单通道</span>
+            fname <span class="token operator">=</span> str<span class="token punctuation">(</span>total<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'.jpg'</span>  <span class="token comment" spellcheck="true"># filename的格式</span>
+            <span class="token comment" spellcheck="true"># fer2013.csv中已经实现将各个csv文件的对应内容写好，包括pixel(与转换为照片有关)，emotion(0-6对应于不同的情绪)，usage对应于training，testing，validing</span>
+            <span class="token keyword">if</span> usage <span class="token operator">==</span> <span class="token string">'Training'</span><span class="token punctuation">:</span>
+                save_path <span class="token operator">=</span> TRAIN_DIR <span class="token operator">+</span> <span class="token string">'\\'</span> <span class="token operator">+</span> fname  <span class="token comment" spellcheck="true"># 文件的保存路径</span>
+                train_path_data<span class="token punctuation">[</span><span class="token string">'path'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>fname<span class="token punctuation">)</span>
+                train_path_data<span class="token punctuation">[</span><span class="token string">'emotion'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>label<span class="token punctuation">)</span>
+                train_landmark<span class="token punctuation">.</span>append<span class="token punctuation">(</span>landmarks<span class="token punctuation">)</span>
+            <span class="token keyword">elif</span> usage <span class="token operator">==</span> <span class="token string">'PrivateTest'</span><span class="token punctuation">:</span>
+                save_path <span class="token operator">=</span> VALID_DIR <span class="token operator">+</span> <span class="token string">'\\'</span> <span class="token operator">+</span> fname
+                valid_path_data<span class="token punctuation">[</span><span class="token string">'path'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>fname<span class="token punctuation">)</span>
+                valid_path_data<span class="token punctuation">[</span><span class="token string">'emotion'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>label<span class="token punctuation">)</span>
+                valid_landmark<span class="token punctuation">.</span>append<span class="token punctuation">(</span>landmarks<span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                save_path <span class="token operator">=</span> TEST_DIR <span class="token operator">+</span> <span class="token string">'\\'</span> <span class="token operator">+</span> fname
+                test_path_data<span class="token punctuation">[</span><span class="token string">'path'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>fname<span class="token punctuation">)</span>
+                test_path_data<span class="token punctuation">[</span><span class="token string">'emotion'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>label<span class="token punctuation">)</span>
+                test_landmark<span class="token punctuation">.</span>append<span class="token punctuation">(</span>landmarks<span class="token punctuation">)</span>
+            img<span class="token punctuation">.</span>save<span class="token punctuation">(</span>save_path<span class="token punctuation">)</span>
+            total <span class="token operator">+=</span> <span class="token number">1</span>
+
+    <span class="token comment" spellcheck="true"># 将train_landmark中的内容转为array格式，np.asarray(file，dtype=floatxx，ord)</span>
+    train_landmark <span class="token operator">=</span> np<span class="token punctuation">.</span>asarray<span class="token punctuation">(</span>train_landmark<span class="token punctuation">)</span>
+    valid_landmark <span class="token operator">=</span> np<span class="token punctuation">.</span>asarray<span class="token punctuation">(</span>valid_landmark<span class="token punctuation">)</span>
+    test_landmark <span class="token operator">=</span> np<span class="token punctuation">.</span>asarray<span class="token punctuation">(</span>test_landmark<span class="token punctuation">)</span>
+
+    np<span class="token punctuation">.</span>savez<span class="token punctuation">(</span>TRAIN_LANDMARK_PATH<span class="token punctuation">,</span> landmark<span class="token operator">=</span>train_landmark<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 生成npz的压缩文件</span>
+    np<span class="token punctuation">.</span>savez<span class="token punctuation">(</span>VALID_LANDMARK_PATH<span class="token punctuation">,</span> landmark<span class="token operator">=</span>valid_landmark<span class="token punctuation">)</span>
+    np<span class="token punctuation">.</span>savez<span class="token punctuation">(</span>TEST_LANDMARK_PATH<span class="token punctuation">,</span> landmark<span class="token operator">=</span>test_landmark<span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true"># dataframe是pandas的存储数据的方式，类似与matlab的矩阵和excel的表格，第一个参数与是用于存储的数据，可以是字符什么的，</span>
+    <span class="token comment" spellcheck="true"># 第二个数据index和第三个数据column分别代表行和列的标记，注意长度要和所给数据的行列大小一致</span>
+    <span class="token comment" spellcheck="true"># 例如df=pd.DataFrame([[1,2,3,4],[2,3,4,5],</span>
+    <span class="token comment" spellcheck="true">#              [3,4,5,6]，[4,5,6,7]],</span>
+    <span class="token comment" spellcheck="true">#             index=list('ABCD'),columns=list('ABCD'))</span>
+    <span class="token comment" spellcheck="true"># df=</span>
+    <span class="token triple-quoted-string string">'''A  B  C  D
+    A  1  2  3  4
+    B  2  3  4  5
+    C  3  4  5  6
+    D  4  5  6  7
+    '''</span>
+    train_path_data <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>train_path_data<span class="token punctuation">)</span>
+    train_path_data<span class="token punctuation">.</span>to_pickle<span class="token punctuation">(</span>TRAIN_PATH<span class="token punctuation">)</span>
+    valid_path_data <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>valid_path_data<span class="token punctuation">)</span>
+    valid_path_data<span class="token punctuation">.</span>to_pickle<span class="token punctuation">(</span>VALID_PATH<span class="token punctuation">)</span>
+    test_path_data <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>test_path_data<span class="token punctuation">)</span>
+    test_path_data<span class="token punctuation">.</span>to_pickle<span class="token punctuation">(</span>TEST_PATH<span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># 输出training，testing，validing中文件的个数</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Total: &amp;#123;&amp;#125;, training: &amp;#123;&amp;#125;, valid: &amp;#123;&amp;#125;, test: &amp;#123;&amp;#125;'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>
+        total<span class="token punctuation">,</span> len<span class="token punctuation">(</span>train_path_data<span class="token punctuation">)</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>valid_path_data<span class="token punctuation">)</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>test_path_data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">def</span> <span class="token function">crop_face_area</span><span class="token punctuation">(</span>detector<span class="token punctuation">,</span> landmark_predictor<span class="token punctuation">,</span> image<span class="token punctuation">,</span> img_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
+    裁剪图像的人脸部分，并resize到img_size尺寸
+
+    :param detector:
+    :param image:
+    :param img_size:
+    :return: Two numpy arrays containing the area and landmarks of all faces.
+    None if no face was detected.
+    """</span>
+    <span class="token comment" spellcheck="true"># p_img = Image.fromarray(image).convert(mode='RGB')</span>
+    <span class="token comment" spellcheck="true"># cv_img = cv2.cvtColor(np.asarray(p_img), cv2.COLOR_RGB2GRAY)</span>
+    <span class="token comment" spellcheck="true"># faces = detector.detectMultiScale(</span>
+    <span class="token comment" spellcheck="true">#     image=cv_img,</span>
+    <span class="token comment" spellcheck="true">#     scaleFactor=1.1,</span>
+    <span class="token comment" spellcheck="true">#     minNeighbors=1,</span>
+    <span class="token comment" spellcheck="true">#     minSize=(30, 30),</span>
+    <span class="token comment" spellcheck="true">#     flags=0</span>
+    <span class="token comment" spellcheck="true"># )</span>
+    <span class="token comment" spellcheck="true"># if len(faces) != 0:</span>
+    <span class="token comment" spellcheck="true">#     x, y, w, h = faces[0]</span>
+    <span class="token comment" spellcheck="true">#     cv_img = cv2.resize(cv_img[x:x + w, y:y + h], (img_size, img_size))</span>
+    <span class="token comment" spellcheck="true">#     return np.asarray(cv_img)</span>
+    <span class="token comment" spellcheck="true"># else:</span>
+    <span class="token comment" spellcheck="true">#     return None</span>
+
+    <span class="token comment" spellcheck="true"># 将image从np.array转化为RGB的照片的格式</span>
+    p_img <span class="token operator">=</span> Image<span class="token punctuation">.</span>fromarray<span class="token punctuation">(</span>image<span class="token punctuation">)</span><span class="token punctuation">.</span>convert<span class="token punctuation">(</span>mode<span class="token operator">=</span><span class="token string">'RGB'</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># 将P_img从ＲＧＢ转为灰度图</span>
+    cv_img <span class="token operator">=</span> cv2<span class="token punctuation">.</span>cvtColor<span class="token punctuation">(</span>np<span class="token punctuation">.</span>asarray<span class="token punctuation">(</span>p_img<span class="token punctuation">)</span><span class="token punctuation">,</span> cv2<span class="token punctuation">.</span>COLOR_RGB2GRAY<span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># 检测灰度图cv_img中的人脸</span>
+    faces <span class="token operator">=</span> detector<span class="token punctuation">(</span>cv_img<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    all_landmarks <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    all_faces <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">if</span> len<span class="token punctuation">(</span>faces<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> face <span class="token keyword">in</span> faces<span class="token punctuation">:</span>
+            shape <span class="token operator">=</span> landmark_predictor<span class="token punctuation">(</span>cv_img<span class="token punctuation">,</span> face<span class="token punctuation">)</span>
+            landmarks <span class="token operator">=</span> np<span class="token punctuation">.</span>ndarray<span class="token punctuation">(</span>shape<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">68</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">68</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                landmarks<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>shape<span class="token punctuation">.</span>part<span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">.</span>x<span class="token punctuation">,</span> shape<span class="token punctuation">.</span>part<span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">.</span>y<span class="token punctuation">)</span>
+            all_landmarks<span class="token punctuation">.</span>append<span class="token punctuation">(</span>landmarks<span class="token punctuation">)</span>
+            x1<span class="token punctuation">,</span> y1<span class="token punctuation">,</span> x2<span class="token punctuation">,</span> y2 <span class="token operator">=</span> face<span class="token punctuation">.</span>left<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face<span class="token punctuation">.</span>top<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face<span class="token punctuation">.</span>right<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face<span class="token punctuation">.</span>bottom<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true"># 裁剪照片多余的部分</span>
+            <span class="token keyword">if</span> x1 <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                x1 <span class="token operator">=</span> <span class="token number">0</span>
+            <span class="token keyword">if</span> x1 <span class="token operator">></span> cv_img<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                x1 <span class="token operator">=</span> cv_img<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+            <span class="token keyword">if</span> x2 <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                x2 <span class="token operator">=</span> <span class="token number">0</span>
+            <span class="token keyword">if</span> x2 <span class="token operator">></span> cv_img<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                x2 <span class="token operator">=</span> cv_img<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+            <span class="token keyword">if</span> y1 <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                y1 <span class="token operator">=</span> <span class="token number">0</span>
+            <span class="token keyword">if</span> y1 <span class="token operator">></span> cv_img<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                y1 <span class="token operator">=</span> cv_img<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+            <span class="token keyword">if</span> y2 <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                y2 <span class="token operator">=</span> <span class="token number">0</span>
+            <span class="token keyword">if</span> y2 <span class="token operator">></span> cv_img<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                y2 <span class="token operator">=</span> cv_img<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+            img <span class="token operator">=</span> cv2<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>cv_img<span class="token punctuation">[</span>y1<span class="token punctuation">:</span>y2<span class="token punctuation">,</span> x1<span class="token punctuation">:</span>x2<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>img_size<span class="token punctuation">,</span> img_size<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            all_faces<span class="token punctuation">.</span>append<span class="token punctuation">(</span>img<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># 返回每张照片img中的人脸所在的位置</span>
+        <span class="token keyword">return</span> np<span class="token punctuation">.</span>asarray<span class="token punctuation">(</span>all_faces<span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>asarray<span class="token punctuation">(</span>all_landmarks<span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> None<span class="token punctuation">,</span> None
+
+
+<span class="token triple-quoted-string string">'''
+def count_lines(csv_path):
+    data = pd.read_csv(csv_path, encoding="ISO-8859-1")
+    return data.shape[0]
+    #data.shape[0]代表csv文件中有多少行，也即有多少张照片
+'''</span>
+<span class="token triple-quoted-string string">'''
+def show_class_distribution(file_path):
+    label_num = np.zeros([7], dtype=np.int32)
+    data = pd.read_csv(file_path)
+
+    for label in data['emotion']:
+        label_num[label] += 1  # get the name of emotions alreay-known
+
+    rects = plt.bar(class_names, label_num)
+    plt.title('Label Distribution')
+    plt.xlabel("Label")
+    plt.ylabel("Number")
+
+    for rect in rects:
+        height = rect.get_height()
+        plt.text(rect.get_x() + rect.get_width() / 2, height +
+                 1, str(height), ha="center", va="bottom")
+    plt.show()
+'''</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    DATA_PATH <span class="token operator">=</span> <span class="token string">'D:\\2019-10-19\\csv\\fer2013_2.csv'</span>
+    convert_csv_to_jpg<span class="token punctuation">(</span>DATA_PATH<span class="token punctuation">)</span></code></pre>
 
                 
             </div>
@@ -456,7 +660,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://roc-may.github.io/2021/01/14/hello-world/">https://roc-may.github.io/2021/01/14/hello-world/</a>
+                    <a href="https://roc-may.github.io/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/">https://roc-may.github.io/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -493,7 +697,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/python/">
+                                    <span class="chip bg-color">python</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -667,13 +875,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/">
+                <a href="/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="将csv转为对应的灰度图">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="基于python的文件传输助手">
                         
-                        <span class="card-title">将csv转为对应的灰度图</span>
+                        <span class="card-title">基于python的文件传输助手</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -697,8 +905,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/python/">
-                        <span class="chip bg-color">python</span>
+                    <a href="/tags/python%E3%80%81%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93/">
+                        <span class="chip bg-color">python、文件传输</span>
                     </a>
                     
                 </div>
@@ -709,7 +917,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2021/01/14/hello-world/">
@@ -739,7 +947,6 @@
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
