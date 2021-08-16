@@ -421,260 +421,262 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>##目录<br>###操作环境<br>python3.6+ubuntu18.04，<br>###操作方法<br>终端中输入<br>python3 -m http.server（写python3是为了避免在系统同时存在python2和python3时，和python2冲突）<br>打开手机浏览器，网址栏输入<br>你的电脑ip:8000<br>例如：192.168.<strong><em>.</em></strong>:8000<br>监听你的电脑的8000号端口就行，这样你就可以看到你的电脑里面的文件了。<br>###注意事项<br>注意哦，手机和电脑要在同一个局域网下面，也就是说要连一个网。<br>不过就是只能看，不能上传，有升级的空间。<br>github上看到过一个不错的脚本，分享一下。<br>###代码</p>
-<pre><code>#!/usr/bin/env python3
+                <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h3 id="操作环境"><a href="#操作环境" class="headerlink" title="操作环境"></a>操作环境</h3><p>python3.6+ubuntu18.04</p>
+<h3 id="操作方法"><a href="#操作方法" class="headerlink" title="操作方法"></a>操作方法</h3><p>终端中输入<br>python3 -m http.server（写python3是为了避免在系统同时存在python2和python3时，和python2冲突）<br>打开手机浏览器，网址栏输入<br>你的电脑ip:8000<br>例如：192.168.<strong><em>.</em></strong>:8000<br>监听你的电脑的8000号端口就行，这样你就可以看到你的电脑里面的文件了。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>注意哦，手机和电脑要在同一个局域网下面，也就是说要连一个网。<br>不过就是只能看，不能上传，有升级的空间。<br>github上看到过一个不错的脚本，分享一下。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true">#!/usr/bin/env python3</span>
 
-&quot;&quot;&quot;Simple HTTP Server With Upload.
+<span class="token triple-quoted-string string">"""Simple HTTP Server With Upload.
 This module builds on http.server by implementing the standard GET
 and HEAD requests in a fairly straightforward manner.
 see: https://gist.github.com/UniIsland/3346170
-&quot;&quot;&quot;
+"""</span>
 
 
-__version__ = &quot;0.1&quot;
-__all__ = [&quot;SimpleHTTPRequestHandler&quot;]
-__author__ = &quot;bones7456&quot;
-__home_page__ = &quot;https://gist.github.com/UniIsland/3346170&quot;
+__version__ <span class="token operator">=</span> <span class="token string">"0.1"</span>
+__all__ <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"SimpleHTTPRequestHandler"</span><span class="token punctuation">]</span>
+__author__ <span class="token operator">=</span> <span class="token string">"bones7456"</span>
+__home_page__ <span class="token operator">=</span> <span class="token string">"https://gist.github.com/UniIsland/3346170"</span>
 
-import os
-import posixpath
-import http.server
-import socketserver
-import urllib.request, urllib.parse, urllib.error
-import html
-import shutil
-import mimetypes
-import re
-import argparse
-import base64
+<span class="token keyword">import</span> os
+<span class="token keyword">import</span> posixpath
+<span class="token keyword">import</span> http<span class="token punctuation">.</span>server
+<span class="token keyword">import</span> socketserver
+<span class="token keyword">import</span> urllib<span class="token punctuation">.</span>request<span class="token punctuation">,</span> urllib<span class="token punctuation">.</span>parse<span class="token punctuation">,</span> urllib<span class="token punctuation">.</span>error
+<span class="token keyword">import</span> html
+<span class="token keyword">import</span> shutil
+<span class="token keyword">import</span> mimetypes
+<span class="token keyword">import</span> re
+<span class="token keyword">import</span> argparse
+<span class="token keyword">import</span> base64
 
-from io import BytesIO
+<span class="token keyword">from</span> io <span class="token keyword">import</span> BytesIO
 
-class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
+<span class="token keyword">class</span> <span class="token class-name">SimpleHTTPRequestHandler</span><span class="token punctuation">(</span>http<span class="token punctuation">.</span>server<span class="token punctuation">.</span>BaseHTTPRequestHandler<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
-    &quot;&quot;&quot;Simple HTTP request handler with GET/HEAD/POST commands.
+    <span class="token triple-quoted-string string">"""Simple HTTP request handler with GET/HEAD/POST commands.
     This serves files from the current directory and any of its
     subdirectories.  The MIME type for files is determined by
     calling the .guess_type() method. And can reveive file uploaded
     by client.
     The GET/HEAD/POST requests are identical except that the HEAD
     request omits the actual contents of the file.
-    &quot;&quot;&quot;
+    """</span>
 
-    server_version = &quot;SimpleHTTPWithUpload/&quot; + __version__
+    server_version <span class="token operator">=</span> <span class="token string">"SimpleHTTPWithUpload/"</span> <span class="token operator">+</span> __version__
 
-    def do_GET(self):
-        &quot;&quot;&quot;Serve a GET request.&quot;&quot;&quot;
-        f = self.send_head()
-        if f:
-            self.copyfile(f, self.wfile)
-            f.close()
+    <span class="token keyword">def</span> <span class="token function">do_GET</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Serve a GET request."""</span>
+        f <span class="token operator">=</span> self<span class="token punctuation">.</span>send_head<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> f<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>copyfile<span class="token punctuation">(</span>f<span class="token punctuation">,</span> self<span class="token punctuation">.</span>wfile<span class="token punctuation">)</span>
+            f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    def do_HEAD(self):
-        &quot;&quot;&quot;Serve a HEAD request.&quot;&quot;&quot;
-        f = self.send_head()
-        if f:
-            f.close()
+    <span class="token keyword">def</span> <span class="token function">do_HEAD</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Serve a HEAD request."""</span>
+        f <span class="token operator">=</span> self<span class="token punctuation">.</span>send_head<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> f<span class="token punctuation">:</span>
+            f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    def do_POST(self):
-        &quot;&quot;&quot;Serve a POST request.&quot;&quot;&quot;
-        r, info = self.deal_post_data()
-        print((r, info, &quot;by: &quot;, self.client_address))
-        f = BytesIO()
-        f.write(b&#39;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;&#39;)
-        f.write(b&quot;&lt;html&gt;\n&lt;title&gt;Upload Result Page&lt;/title&gt;\n&quot;)
-        f.write(b&quot;&lt;body&gt;\n&lt;h2&gt;Upload Result Page&lt;/h2&gt;\n&quot;)
-        f.write(b&quot;&lt;hr&gt;\n&quot;)
-        if r:
-            f.write(b&quot;&lt;strong&gt;Success:&lt;/strong&gt;&quot;)
-        else:
-            f.write(b&quot;&lt;strong&gt;Failed:&lt;/strong&gt;&quot;)
-        f.write(info.encode())
-        f.write((&quot;&lt;br&gt;&lt;a href=\&quot;%s\&quot;&gt;back&lt;/a&gt;&quot; % self.headers[&#39;referer&#39;]).encode())
-        f.write(b&quot;&lt;hr&gt;&lt;small&gt;Powered By: bones7456, check new version at &quot;)
-        f.write(b&quot;&lt;a href=\&quot;https://gist.github.com/UniIsland/3346170\&quot;&gt;&quot;)
-        f.write(b&quot;here&lt;/a&gt;.&lt;/small&gt;&lt;/body&gt;\n&lt;/html&gt;\n&quot;)
-        length = f.tell()
-        f.seek(0)
-        self.send_response(200)
-        self.send_header(&quot;Content-type&quot;, &quot;text/html&quot;)
-        self.send_header(&quot;Content-Length&quot;, str(length))
-        self.end_headers()
-        if f:
-            self.copyfile(f, self.wfile)
-            f.close()
+    <span class="token keyword">def</span> <span class="token function">do_POST</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Serve a POST request."""</span>
+        r<span class="token punctuation">,</span> info <span class="token operator">=</span> self<span class="token punctuation">.</span>deal_post_data<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>r<span class="token punctuation">,</span> info<span class="token punctuation">,</span> <span class="token string">"by: "</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>client_address<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        f <span class="token operator">=</span> BytesIO<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">'&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">'</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;html>\n&lt;title>Upload Result Page&lt;/title>\n"</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;body>\n&lt;h2>Upload Result Page&lt;/h2>\n"</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;hr>\n"</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> r<span class="token punctuation">:</span>
+            f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;strong>Success:&lt;/strong>"</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;strong>Failed:&lt;/strong>"</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>info<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">"&lt;br>&lt;a href=\"%s\">back&lt;/a>"</span> <span class="token operator">%</span> self<span class="token punctuation">.</span>headers<span class="token punctuation">[</span><span class="token string">'referer'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;hr>&lt;small>Powered By: bones7456, check new version at "</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;a href=\"https://gist.github.com/UniIsland/3346170\">"</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"here&lt;/a>.&lt;/small>&lt;/body>\n&lt;/html>\n"</span><span class="token punctuation">)</span>
+        length <span class="token operator">=</span> f<span class="token punctuation">.</span>tell<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>seek<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>send_response<span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">"Content-type"</span><span class="token punctuation">,</span> <span class="token string">"text/html"</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">"Content-Length"</span><span class="token punctuation">,</span> str<span class="token punctuation">(</span>length<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>end_headers<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> f<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>copyfile<span class="token punctuation">(</span>f<span class="token punctuation">,</span> self<span class="token punctuation">.</span>wfile<span class="token punctuation">)</span>
+            f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    def deal_post_data(self):
-        uploaded_files = []
-        content_type = self.headers[&#39;content-type&#39;]
-        if not content_type:
-            return (False, &quot;Content-Type header doesn&#39;t contain boundary&quot;)
-        boundary = content_type.split(&quot;=&quot;)[1].encode()
-        remainbytes = int(self.headers[&#39;content-length&#39;])
-        line = self.rfile.readline()
-        remainbytes -= len(line)
-        if not boundary in line:
-            return (False, &quot;Content NOT begin with boundary&quot;)
-        while remainbytes &gt; 0:
-            line = self.rfile.readline()
-            remainbytes -= len(line)
-            fn = re.findall(r&#39;Content-Disposition.*name=&quot;file&quot;; filename=&quot;(.*)&quot;&#39;, line.decode())
-            if not fn:
-                return (False, &quot;Can&#39;t find out file name...&quot;)
-            path = self.translate_path(self.path)
-            fn = os.path.join(path, fn[0])
-            line = self.rfile.readline()
-            remainbytes -= len(line)
-            line = self.rfile.readline()
-            remainbytes -= len(line)
-            try:
-                out = open(fn, &#39;wb&#39;)
-            except IOError:
-                return (False, &quot;Can&#39;t create file to write, do you have permission to write?&quot;)
-            else:
-                with out:
-                    preline = self.rfile.readline()
-                    remainbytes -= len(preline)
-                    while remainbytes &gt; 0:
-                        line = self.rfile.readline()
-                        remainbytes -= len(line)
-                        if boundary in line:
-                            preline = preline[0:-1]
-                            if preline.endswith(b&#39;\r&#39;):
-                                preline = preline[0:-1]
-                            out.write(preline)
-                            uploaded_files.append(fn)
-                            break
-                        else:
-                            out.write(preline)
-                            preline = line
-        return (True, &quot;File &#39;%s&#39; upload success!&quot; % &quot;,&quot;.join(uploaded_files))
+    <span class="token keyword">def</span> <span class="token function">deal_post_data</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        uploaded_files <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        content_type <span class="token operator">=</span> self<span class="token punctuation">.</span>headers<span class="token punctuation">[</span><span class="token string">'content-type'</span><span class="token punctuation">]</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> content_type<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token boolean">False</span><span class="token punctuation">,</span> <span class="token string">"Content-Type header doesn't contain boundary"</span><span class="token punctuation">)</span>
+        boundary <span class="token operator">=</span> content_type<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"="</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        remainbytes <span class="token operator">=</span> int<span class="token punctuation">(</span>self<span class="token punctuation">.</span>headers<span class="token punctuation">[</span><span class="token string">'content-length'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        line <span class="token operator">=</span> self<span class="token punctuation">.</span>rfile<span class="token punctuation">.</span>readline<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        remainbytes <span class="token operator">-=</span> len<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> boundary <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token boolean">False</span><span class="token punctuation">,</span> <span class="token string">"Content NOT begin with boundary"</span><span class="token punctuation">)</span>
+        <span class="token keyword">while</span> remainbytes <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+            line <span class="token operator">=</span> self<span class="token punctuation">.</span>rfile<span class="token punctuation">.</span>readline<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            remainbytes <span class="token operator">-=</span> len<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
+            fn <span class="token operator">=</span> re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'Content-Disposition.*name="file"; filename="(.*)"'</span><span class="token punctuation">,</span> line<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> <span class="token operator">not</span> fn<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token boolean">False</span><span class="token punctuation">,</span> <span class="token string">"Can't find out file name..."</span><span class="token punctuation">)</span>
+            path <span class="token operator">=</span> self<span class="token punctuation">.</span>translate_path<span class="token punctuation">(</span>self<span class="token punctuation">.</span>path<span class="token punctuation">)</span>
+            fn <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>path<span class="token punctuation">,</span> fn<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+            line <span class="token operator">=</span> self<span class="token punctuation">.</span>rfile<span class="token punctuation">.</span>readline<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            remainbytes <span class="token operator">-=</span> len<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
+            line <span class="token operator">=</span> self<span class="token punctuation">.</span>rfile<span class="token punctuation">.</span>readline<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            remainbytes <span class="token operator">-=</span> len<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
+            <span class="token keyword">try</span><span class="token punctuation">:</span>
+                out <span class="token operator">=</span> open<span class="token punctuation">(</span>fn<span class="token punctuation">,</span> <span class="token string">'wb'</span><span class="token punctuation">)</span>
+            <span class="token keyword">except</span> IOError<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token boolean">False</span><span class="token punctuation">,</span> <span class="token string">"Can't create file to write, do you have permission to write?"</span><span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                <span class="token keyword">with</span> out<span class="token punctuation">:</span>
+                    preline <span class="token operator">=</span> self<span class="token punctuation">.</span>rfile<span class="token punctuation">.</span>readline<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                    remainbytes <span class="token operator">-=</span> len<span class="token punctuation">(</span>preline<span class="token punctuation">)</span>
+                    <span class="token keyword">while</span> remainbytes <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+                        line <span class="token operator">=</span> self<span class="token punctuation">.</span>rfile<span class="token punctuation">.</span>readline<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                        remainbytes <span class="token operator">-=</span> len<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
+                        <span class="token keyword">if</span> boundary <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                            preline <span class="token operator">=</span> preline<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+                            <span class="token keyword">if</span> preline<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span>b<span class="token string">'\r'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                                preline <span class="token operator">=</span> preline<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+                            out<span class="token punctuation">.</span>write<span class="token punctuation">(</span>preline<span class="token punctuation">)</span>
+                            uploaded_files<span class="token punctuation">.</span>append<span class="token punctuation">(</span>fn<span class="token punctuation">)</span>
+                            <span class="token keyword">break</span>
+                        <span class="token keyword">else</span><span class="token punctuation">:</span>
+                            out<span class="token punctuation">.</span>write<span class="token punctuation">(</span>preline<span class="token punctuation">)</span>
+                            preline <span class="token operator">=</span> line
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token boolean">True</span><span class="token punctuation">,</span> <span class="token string">"File '%s' upload success!"</span> <span class="token operator">%</span> <span class="token string">","</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>uploaded_files<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    def send_head(self):
-        &quot;&quot;&quot;Common code for GET and HEAD commands.
+    <span class="token keyword">def</span> <span class="token function">send_head</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Common code for GET and HEAD commands.
         This sends the response code and MIME headers.
         Return value is either a file object (which has to be copied
         to the outputfile by the caller unless the command was HEAD,
         and must be closed by the caller under all circumstances), or
         None, in which case the caller has nothing further to do.
-        &quot;&quot;&quot;
-        path = self.translate_path(self.path)
-        f = None
-        if os.path.isdir(path):
-            if not self.path.endswith(&#39;/&#39;):
-                # redirect browser - doing basically what apache does
-                self.send_response(301)
-                self.send_header(&quot;Location&quot;, self.path + &quot;/&quot;)
-                self.end_headers()
-                return None
-            for index in &quot;index.html&quot;, &quot;index.htm&quot;:
-                index = os.path.join(path, index)
-                if os.path.exists(index):
-                    path = index
-                    break
-            else:
-                return self.list_directory(path)
-        ctype = self.guess_type(path)
-        try:
-            # Always read in binary mode. Opening files in text mode may cause
-            # newline translations, making the actual size of the content
-            # transmitted *less* than the content-length!
-            f = open(path, &#39;rb&#39;)
-        except IOError:
-            self.send_error(404, &quot;File not found&quot;)
-            return None
-        self.send_response(200)
-        self.send_header(&quot;Content-type&quot;, ctype)
-        fs = os.fstat(f.fileno())
-        self.send_header(&quot;Content-Length&quot;, str(fs[6]))
-        self.send_header(&quot;Last-Modified&quot;, self.date_time_string(fs.st_mtime))
-        self.end_headers()
-        return f
+        """</span>
+        path <span class="token operator">=</span> self<span class="token punctuation">.</span>translate_path<span class="token punctuation">(</span>self<span class="token punctuation">.</span>path<span class="token punctuation">)</span>
+        f <span class="token operator">=</span> None
+        <span class="token keyword">if</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>isdir<span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token operator">not</span> self<span class="token punctuation">.</span>path<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token comment" spellcheck="true"># redirect browser - doing basically what apache does</span>
+                self<span class="token punctuation">.</span>send_response<span class="token punctuation">(</span><span class="token number">301</span><span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">"Location"</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>path <span class="token operator">+</span> <span class="token string">"/"</span><span class="token punctuation">)</span>
+                self<span class="token punctuation">.</span>end_headers<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> None
+            <span class="token keyword">for</span> index <span class="token keyword">in</span> <span class="token string">"index.html"</span><span class="token punctuation">,</span> <span class="token string">"index.htm"</span><span class="token punctuation">:</span>
+                index <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>path<span class="token punctuation">,</span> index<span class="token punctuation">)</span>
+                <span class="token keyword">if</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    path <span class="token operator">=</span> index
+                    <span class="token keyword">break</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> self<span class="token punctuation">.</span>list_directory<span class="token punctuation">(</span>path<span class="token punctuation">)</span>
+        ctype <span class="token operator">=</span> self<span class="token punctuation">.</span>guess_type<span class="token punctuation">(</span>path<span class="token punctuation">)</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true"># Always read in binary mode. Opening files in text mode may cause</span>
+            <span class="token comment" spellcheck="true"># newline translations, making the actual size of the content</span>
+            <span class="token comment" spellcheck="true"># transmitted *less* than the content-length!</span>
+            f <span class="token operator">=</span> open<span class="token punctuation">(</span>path<span class="token punctuation">,</span> <span class="token string">'rb'</span><span class="token punctuation">)</span>
+        <span class="token keyword">except</span> IOError<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>send_error<span class="token punctuation">(</span><span class="token number">404</span><span class="token punctuation">,</span> <span class="token string">"File not found"</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> None
+        self<span class="token punctuation">.</span>send_response<span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">"Content-type"</span><span class="token punctuation">,</span> ctype<span class="token punctuation">)</span>
+        fs <span class="token operator">=</span> os<span class="token punctuation">.</span>fstat<span class="token punctuation">(</span>f<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">"Content-Length"</span><span class="token punctuation">,</span> str<span class="token punctuation">(</span>fs<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">"Last-Modified"</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>date_time_string<span class="token punctuation">(</span>fs<span class="token punctuation">.</span>st_mtime<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>end_headers<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> f
 
-    def list_directory(self, path):
-        &quot;&quot;&quot;Helper to produce a directory listing (absent index.html).
+    <span class="token keyword">def</span> <span class="token function">list_directory</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Helper to produce a directory listing (absent index.html).
         Return value is either a file object, or None (indicating an
         error).  In either case, the headers are sent, making the
         interface the same as for send_head().
-        &quot;&quot;&quot;
-        try:
-            list = os.listdir(path)
-        except os.error:
-            self.send_error(404, &quot;No permission to list directory&quot;)
-            return None
-        list.sort(key=lambda a: a.lower())
-        f = BytesIO()
-        displaypath = html.escape(urllib.parse.unquote(self.path))
-        f.write(b&#39;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;&#39;)
-        f.write((&quot;&lt;html&gt;\n&lt;title&gt;Directory listing for %s&lt;/title&gt;\n&quot; % displaypath).encode())
-        f.write(b&#39;&lt;style type=&quot;text/css&quot;&gt;\n&#39;)
-        f.write(b&#39;a &#123; text-decoration: none; &#125;\n&#39;)
-        f.write(b&#39;a:link &#123; text-decoration: none; font-weight: bold; color: #0000ff; &#125;\n&#39;)
-        f.write(b&#39;a:visited &#123; text-decoration: none; font-weight: bold; color: #0000ff; &#125;\n&#39;)
-        f.write(b&#39;a:active &#123; text-decoration: none; font-weight: bold; color: #0000ff; &#125;\n&#39;)
-        f.write(b&#39;a:hover &#123; text-decoration: none; font-weight: bold; color: #ff0000; &#125;\n&#39;)
-        f.write(b&#39;&lt;/style&gt;\n&#39;)
-        f.write((&quot;&lt;body&gt;\n&lt;h2&gt;Directory listing for %s&lt;/h2&gt;\n&quot; % displaypath).encode())
-        f.write(b&quot;&lt;hr&gt;\n&quot;)
-        f.write(b&quot;&lt;form ENCTYPE=\&quot;multipart/form-data\&quot; method=\&quot;post\&quot;&gt;&quot;)
-        f.write(b&quot;&lt;input name=\&quot;file\&quot; type=\&quot;file\&quot; multiple/&gt;&quot;)
-        f.write(b&quot;&lt;input type=\&quot;submit\&quot; value=\&quot;upload\&quot;/&gt;&lt;/form&gt;\n&quot;)
-        f.write(b&quot;&lt;hr&gt;\n&quot;)
-        f.write(b&#39;&lt;a href=&quot;../&quot;&gt;&lt;img src=&quot;data:image/gif;base64,R0lGODlhGAAYAMIAAP///7+/v7u7u1ZWVTc3NwAAAAAAAAAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAEALAAAAAAYABgAAANKGLrc/jBKNgIhM4rLcaZWd33KJnJkdaKZuXqTugYFeSpFTVpLnj86oM/n+DWGyCAuyUQymlDiMtrsUavP6xCizUB3NCW4Ny6bJwkAOw==&quot; alt=&quot;[PARENTDIR]&quot; width=&quot;24&quot; height=&quot;24&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;Parent Directory&lt;/a&gt;&lt;br /&gt;\n&#39;)
-        for name in list:
-            dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAMIAAP///7+/v7u7u1ZWVTc3NwAAAAAAAAAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAEALAAAAAAYABgAAANdGLrc/jAuQaulQwYBuv9cFnFfSYoPWXoq2qgrALsTYN+4QOg6veFAG2FIdMCCNgvBiAxWlq8mUseUBqGMoxWArW1xXYXWGv59b+WxNH1GV9vsNvd9jsMhxLw+70gAADs=&#39;
-            fullname = os.path.join(path, name)
-            displayname = linkname = name
-            # Append / for directories or @ for symbolic links
-            if os.path.isdir(fullname):
-                dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAMIAAP///+jNlr+/v6KXfm5SG2lPGjc3NwAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAIALAAAAAAYABgAAANjKLrc/jDKSau9WJbN9y1BKIZFVQzjOHRdsw1wDIMpyYAFke9ELa4Lmm9IWBkUwqHPiFQSmYKkU1U4Rqe1YrWJTUGlWK0VjP12R2Jubx1guwPQqGxOj22DrLzeujD4/4CBgAoJADs=&#39;
-                displayname = name + &quot;/&quot;
-                linkname = name + &quot;/&quot;
-            if os.path.islink(fullname):
-                dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAPf/AJaWlpqampubm5ycnJ2dnZ6enp+fn6CgoKGhoaKioqOjo6SkpKWlpaampqioqKmpqaqqqqurq6ysrK2tra6urq+vr7CwsLGxsbKysrOzs7S0tLW1tba2tre3t7i4uLm5ubq6uru7u7y8vL29vb6+vr+/v8LCwsPDw8bGxtDQ0NTU1NXV1dbW1tfX19jY2Nra2tzc3N3d3eDg4OHh4eLi4uPj4+Tk5OXl5efn5+np6erq6uvr6+zs7O7u7u/v7/Dw8PHx8fLy8vPz8/T09PX19fb29vf39/j4+Pr6+vv7+/39/f7+/v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAGAAYAAAI/wCZCBxIsKDBgwgLrsigwUXChEVGYNBwIYKIJA8LFunwocKGDA8ieMg4kAiHDxRmCGyhIAEKkhtR2iCYYYEAkiNQ3ijYIQGAjDkuVFBJsIcBAhcyttCgoSCQBQcUFMn44gIFEiwE/oAqIAfJIREeQLDAZIeCAwO8IuQRowYSIxQgBFhAoQBatQaFiLCQoQIFCxEMREUwoAEPhEA0dMQwQSwCIEFYpKCR8IfiCjWYgJCr4AhJyx13CFRhQYECGBmRcKwgmmAEBCsyltBQQUfBGwUG4MjoYMOIgjsSIJBAskGGEAR3IEhw4AdJExIeyBCIY/kBHySZLNEwgcGGDQYQNBbPLpAIBgULEhB4AIQ8wRMFBIhQ4j4gADs=&#39;
-                displayname = name + &quot;@&quot;
-            if name.endswith((&#39;.bmp&#39;,&#39;.gif&#39;,&#39;.jpg&#39;,&#39;.png&#39;)):
-                dirimage = name
-            if name.endswith((&#39;.avi&#39;,&#39;.mpg&#39;)):
-                dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAMIAAP///7+/v7u7u1ZWVTc3NwAAAAAAAAAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAEALAAAAAAYABgAAANvGLrc/jAuQqu99BEh8OXE4GzdYJ4mQIZjNXAwp7oj+MbyKjY6ntstyg03E9ZKPoEKyLMll6UgAUCtVi07xspTYWptqBOUxXM9scfQ2Ttx+sbZifmNbiLpbEUPHy1TrIB1Xx1cFHkBW4VODmGNjQ4JADs=&#39;
-            if name.endswith((&#39;.idx&#39;,&#39;.srt&#39;,&#39;.sub&#39;)):
-                dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAPf/AAAbDiAfDSoqHjQlADs+J3sxJ0BALERHMk5LN1pSPUZHRk9NQU1OR05ZUFBRRFVXTVdYTVtVQFlVRFtbSF5bTVZWUltbUFlZVFtcVlxdWl5eWl1gWmBiV2FiXWNhXGRjXWlpYmtqZ2xtZmxsaG5ubHJva3Jzb3J0bHN0b3Z5dHd8eXh4dX18dXx/dnt8e31+eahMP4JdWIdnZox4cpVoYKJkXrxqablwcNA6Otg7O/8AAPwHB/0GBvgODvsMDPMbG/ceHvkSEuYqKvYqKvU2NvM6OvQ6OsFQUNVbW8N4eNd0duNeXu9aWvFUVOVqau1jY+1mZu5mZuh5eYSFgIWGgYaFgIiGgYqKiY6LioyMiY2NiYyMio2OiI6OjZCSjZSQi5OSkJGUkpSVk5WVlJWVlZiZlpiZmJ6emp2dnZSko6GhnKGhoKOjoaKnoqSkpKSmpKWmpaampqqrqKurqKqrqq2sqq6urrSyrrCwsLa3tb63tbi4t7q6ur+/vsCbm96Li9iUlMqursmwr9KwsN69veSCguiMjOiOjuaQkOWVleaXmOGfn+aYmOaamuebm+adneecnOeenuiQkOWgoOWsrOasrOWxseW2tue3t+e8vOi+vsHBwcfHx8jIxs7Mx8nJyMvLy8zMy83NzM7Pzs/Pz9PR0dTU1NXV1dXW1tbW1tfX19bb29jY2NnZ2djb29ra2tvb2tvb29za2tzc3N3d3d7e3t/f3+bCwufDw+fGxuTJyejCwujHx+nHx+vPz+rT0+rU1OrX1+vX1+rY2Ojf3+Hh4eLi4uPj4+Hn5+Tk5OXl5ebm5ufn5+nn5+jo6Onp6erp6evr6+zs7PDn5/Dq6vDt7fHv7/Lu7vPu7vPv7/Dw8PHx8fLy8vPz8/Tx8fbz8/T09PX19fX39/b29vj39/j4+Pn4+Pn5+fr5+fr6+vv7+/z7+/z8/P39/f7+/v/+/v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAGAAYAAAI/wDhCRxIsKDBgwgTZis00F27hAbRNSpSaSC7ZM6ePQsXjdmzZekKUpOio0lBVShjJXvYjp07gsEm/dLhqKC2aNG2LesES13BXJTg4dLBi2C7kPDSyQFTRY26c8akZbolkJGOaQTZFTO2LA8KCCA+zDFTp4aggVCCmCtYrJUxNiI4nAjh4o2HGW1CrhvCxGC5cOVqvcCgQQUWGRtanOkG75qOQwXbhWvZ7lOZMIGSsJjihY5AYTowFWRnipUtT6BGWIARY8IXPc1eXtIxrKC7cqJCjdJCIcIBAwRoaLqU6IkRHthGnwPzoEGKDBISMHDAZWAvHUTWjaa1J42NAgAELMBAMGCNwHbWekQxqA4VMkBKSokZE8AKtHLpjuHxo0OSQXfuLKJIOHdc0IECFaxgQivpxHGDDpYc9McS5oBTAhxUbNHFFX2I4Q4fR+iwi0GPCCGLK6rYgQYJWZDhBil7cMMJDjpAAg85L8ETCRDVqAONMuGMA0446rDjEzzi5KDDD4j48g48huxAyCqtODNZOeWcM85DAxEDzDcE+YDEK5u0EostbZ2SyizsQASPE4PAo4466TxVZzptuqmLN266GRAAOw==&#39;
-            if name.endswith(&#39;.iso&#39;):
-                dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAPf/AKysrLGxsbe3t7i4uLm5uLm5ubq6ury8vL29vb6+vry+wb2+wKfeu7XGsbjNtr3UprnVqbbcvqjOzKTM0KbdwKvX2anZ1b/CxbTbw63R5LHS5b3T5dexrtuxrty+p+KvpOCxo8bLnsvJotjAptTPs9HRtcDAwMHBwcLCwsPDw8PCxMLDxsTDwsTEw8TExMXFxcbGxsfHx8jIyMnJycrJysrKysvLy87Ly8zMzM3Nzc7Ozs/PzsDe3NDQ0NHR0dLR0NLS0tPT09TU1NXV1dXW1tbW1tfX19HZ0dLb0NjV1NrW1djY2NnZ2dra2t3a2tzc3N3d3d7e3d/f3t/f38HU5cPf6sff68/e69Pf6sDi3Nng59zh5d7k5ujEw+nFxOnGxunIx+vLx+zNyePTy+Hf3+3Y0eDg3+Tg3+Dg4OHh4uLi4eLi4uPj4uPj4+Hj5OPk4+Th4OTk4+Tk5OXl5OXl5eXm5ebl5Obm5ebm5ubn5ufn5ufn5+Lm6uXo6unj4+rl5Ojo5+jo6Onp6Onp6erq6erq6urr6+vr6uvr6+vs6+zp6e3r6uzs6+zs7O3t7e3u7e7u7e7u7u/v7u/v7+fv9ezu8e3u8PDp6fHr6/Dw8PHx8PHx8fLy8fLy8vPy8vPz8vPz8/Tz8/T08/T09PX19PX19fX29fb19Pb29vf39vf39/j49/j4+Pn4+Pn5+Pn5+fr6+fr6+vv7+vv7+/z8+/z8/P39/P39/f7+/f7+/v7//////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAGAAYAAAI/wB3CRxIsKBBg4hi6GCyBs+eQIH2PJSIB82QGYgKDnqBowmeRpEiTSo0qVGmSI3oGJkxSOOLGkXkIJpkBEEQHzagZEq5siXBjTOGtJnpwweKBFCE7FTJ0mXQoZH2TIGCh4kjR4jkFGn684UMIXIGTWkSpQ0bOTIbaa3hc+BGGUSeFIkyhxCkT6hKDaKztq3AQS5m3EgSZw4gRplIvbq1KxIUI2w1umDBAQycPIQkgVo1K9etWXSARP6pooGID1/+POKEKtatXLFSfQLCdWChBRIYPPAgBpMpVrV20WIFKpMUF4UKElKwIYOFCCTKKCrUSBWsUpkY3WmR/KcLN1quVPLJgmTRrViBPHlyJAgPDL+7BsW4AyhRJUpcQO3S1YePpUN62FHbXy/sUYgkobQiCSKvnHIED1ZgscUb72l0gh6OsCYLLY60QcYYJWBQgQZUXEBIQYWYYAYnitmSCy2ldHJJGCNAQMEEK3TnVgo5jMJZLra8UoomjfjRBQghOEADfIW88AIdtdyCSyyocMJeHWd40cEPA+4SSGA+TLJLLauAIkkhesgRhxJOLCHDHgXhwVETbTjCiiuiSHIIIGo8UYghTcyAR0GgyDCAAAYMEMAJO/QwAwEAFHCAAQXIMMpBmzhSyCCD4JHGFA0FMkghMxEUEAA7&#39;
-            # Note: a link to a directory displays with @ and links with /
-            f.write((&#39;&lt;a href=&quot;%s&quot;&gt;&lt;img src=&quot;%s&quot; width=&quot;24&quot; height=&quot;24&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;%s&lt;/a&gt;&lt;br /&gt;\n&#39;
-                    % (urllib.parse.quote(linkname), dirimage , html.escape(displayname))).encode())
-        f.write(b&quot;&lt;hr&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n&quot;)
-        length = f.tell()
-        f.seek(0)
-        self.send_response(200)
-        self.send_header(&quot;Content-type&quot;, &quot;text/html&quot;)
-        self.send_header(&quot;Content-Length&quot;, str(length))
-        self.end_headers()
-        return f
+        """</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            list <span class="token operator">=</span> os<span class="token punctuation">.</span>listdir<span class="token punctuation">(</span>path<span class="token punctuation">)</span>
+        <span class="token keyword">except</span> os<span class="token punctuation">.</span>error<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>send_error<span class="token punctuation">(</span><span class="token number">404</span><span class="token punctuation">,</span> <span class="token string">"No permission to list directory"</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> None
+        list<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span><span class="token keyword">lambda</span> a<span class="token punctuation">:</span> a<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        f <span class="token operator">=</span> BytesIO<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        displaypath <span class="token operator">=</span> html<span class="token punctuation">.</span>escape<span class="token punctuation">(</span>urllib<span class="token punctuation">.</span>parse<span class="token punctuation">.</span>unquote<span class="token punctuation">(</span>self<span class="token punctuation">.</span>path<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">'&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">'</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">"&lt;html>\n&lt;title>Directory listing for %s&lt;/title>\n"</span> <span class="token operator">%</span> displaypath<span class="token punctuation">)</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">'&lt;style type="text/css">\n'</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">'a &amp;#123; text-decoration: none; &amp;#125;\n'</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">'a:link &amp;#123; text-decoration: none; font-weight: bold; color: #0000ff; &amp;#125;\n'</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">'a:visited &amp;#123; text-decoration: none; font-weight: bold; color: #0000ff; &amp;#125;\n'</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">'a:active &amp;#123; text-decoration: none; font-weight: bold; color: #0000ff; &amp;#125;\n'</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">'a:hover &amp;#123; text-decoration: none; font-weight: bold; color: #ff0000; &amp;#125;\n'</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">'&lt;/style>\n'</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">"&lt;body>\n&lt;h2>Directory listing for %s&lt;/h2>\n"</span> <span class="token operator">%</span> displaypath<span class="token punctuation">)</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;hr>\n"</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;form ENCTYPE=\"multipart/form-data\" method=\"post\">"</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;input name=\"file\" type=\"file\" multiple/>"</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;input type=\"submit\" value=\"upload\"/>&lt;/form>\n"</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;hr>\n"</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">'&lt;a href="../">&lt;img src="data:image/gif;base64,R0lGODlhGAAYAMIAAP///7+/v7u7u1ZWVTc3NwAAAAAAAAAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAEALAAAAAAYABgAAANKGLrc/jBKNgIhM4rLcaZWd33KJnJkdaKZuXqTugYFeSpFTVpLnj86oM/n+DWGyCAuyUQymlDiMtrsUavP6xCizUB3NCW4Ny6bJwkAOw==" alt="[PARENTDIR]" width="24" height="24">&amp;nbsp;&amp;nbsp;&amp;nbsp;Parent Directory&lt;/a>&lt;br />\n'</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> name <span class="token keyword">in</span> list<span class="token punctuation">:</span>
+            dirimage <span class="token operator">=</span> <span class="token string">'data:image/gif;base64,R0lGODlhGAAYAMIAAP///7+/v7u7u1ZWVTc3NwAAAAAAAAAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAEALAAAAAAYABgAAANdGLrc/jAuQaulQwYBuv9cFnFfSYoPWXoq2qgrALsTYN+4QOg6veFAG2FIdMCCNgvBiAxWlq8mUseUBqGMoxWArW1xXYXWGv59b+WxNH1GV9vsNvd9jsMhxLw+70gAADs='</span>
+            fullname <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>path<span class="token punctuation">,</span> name<span class="token punctuation">)</span>
+            displayname <span class="token operator">=</span> linkname <span class="token operator">=</span> name
+            <span class="token comment" spellcheck="true"># Append / for directories or @ for symbolic links</span>
+            <span class="token keyword">if</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>isdir<span class="token punctuation">(</span>fullname<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                dirimage <span class="token operator">=</span> <span class="token string">'data:image/gif;base64,R0lGODlhGAAYAMIAAP///+jNlr+/v6KXfm5SG2lPGjc3NwAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAIALAAAAAAYABgAAANjKLrc/jDKSau9WJbN9y1BKIZFVQzjOHRdsw1wDIMpyYAFke9ELa4Lmm9IWBkUwqHPiFQSmYKkU1U4Rqe1YrWJTUGlWK0VjP12R2Jubx1guwPQqGxOj22DrLzeujD4/4CBgAoJADs='</span>
+                displayname <span class="token operator">=</span> name <span class="token operator">+</span> <span class="token string">"/"</span>
+                linkname <span class="token operator">=</span> name <span class="token operator">+</span> <span class="token string">"/"</span>
+            <span class="token keyword">if</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>islink<span class="token punctuation">(</span>fullname<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                dirimage <span class="token operator">=</span> <span class="token string">'data:image/gif;base64,R0lGODlhGAAYAPf/AJaWlpqampubm5ycnJ2dnZ6enp+fn6CgoKGhoaKioqOjo6SkpKWlpaampqioqKmpqaqqqqurq6ysrK2tra6urq+vr7CwsLGxsbKysrOzs7S0tLW1tba2tre3t7i4uLm5ubq6uru7u7y8vL29vb6+vr+/v8LCwsPDw8bGxtDQ0NTU1NXV1dbW1tfX19jY2Nra2tzc3N3d3eDg4OHh4eLi4uPj4+Tk5OXl5efn5+np6erq6uvr6+zs7O7u7u/v7/Dw8PHx8fLy8vPz8/T09PX19fb29vf39/j4+Pr6+vv7+/39/f7+/v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAGAAYAAAI/wCZCBxIsKDBgwgLrsigwUXChEVGYNBwIYKIJA8LFunwocKGDA8ieMg4kAiHDxRmCGyhIAEKkhtR2iCYYYEAkiNQ3ijYIQGAjDkuVFBJsIcBAhcyttCgoSCQBQcUFMn44gIFEiwE/oAqIAfJIREeQLDAZIeCAwO8IuQRowYSIxQgBFhAoQBatQaFiLCQoQIFCxEMREUwoAEPhEA0dMQwQSwCIEFYpKCR8IfiCjWYgJCr4AhJyx13CFRhQYECGBmRcKwgmmAEBCsyltBQQUfBGwUG4MjoYMOIgjsSIJBAskGGEAR3IEhw4AdJExIeyBCIY/kBHySZLNEwgcGGDQYQNBbPLpAIBgULEhB4AIQ8wRMFBIhQ4j4gADs='</span>
+                displayname <span class="token operator">=</span> name <span class="token operator">+</span> <span class="token string">"@"</span>
+            <span class="token keyword">if</span> name<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'.bmp'</span><span class="token punctuation">,</span><span class="token string">'.gif'</span><span class="token punctuation">,</span><span class="token string">'.jpg'</span><span class="token punctuation">,</span><span class="token string">'.png'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                dirimage <span class="token operator">=</span> name
+            <span class="token keyword">if</span> name<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'.avi'</span><span class="token punctuation">,</span><span class="token string">'.mpg'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                dirimage <span class="token operator">=</span> <span class="token string">'data:image/gif;base64,R0lGODlhGAAYAMIAAP///7+/v7u7u1ZWVTc3NwAAAAAAAAAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAEALAAAAAAYABgAAANvGLrc/jAuQqu99BEh8OXE4GzdYJ4mQIZjNXAwp7oj+MbyKjY6ntstyg03E9ZKPoEKyLMll6UgAUCtVi07xspTYWptqBOUxXM9scfQ2Ttx+sbZifmNbiLpbEUPHy1TrIB1Xx1cFHkBW4VODmGNjQ4JADs='</span>
+            <span class="token keyword">if</span> name<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'.idx'</span><span class="token punctuation">,</span><span class="token string">'.srt'</span><span class="token punctuation">,</span><span class="token string">'.sub'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                dirimage <span class="token operator">=</span> <span class="token string">'data:image/gif;base64,R0lGODlhGAAYAPf/AAAbDiAfDSoqHjQlADs+J3sxJ0BALERHMk5LN1pSPUZHRk9NQU1OR05ZUFBRRFVXTVdYTVtVQFlVRFtbSF5bTVZWUltbUFlZVFtcVlxdWl5eWl1gWmBiV2FiXWNhXGRjXWlpYmtqZ2xtZmxsaG5ubHJva3Jzb3J0bHN0b3Z5dHd8eXh4dX18dXx/dnt8e31+eahMP4JdWIdnZox4cpVoYKJkXrxqablwcNA6Otg7O/8AAPwHB/0GBvgODvsMDPMbG/ceHvkSEuYqKvYqKvU2NvM6OvQ6OsFQUNVbW8N4eNd0duNeXu9aWvFUVOVqau1jY+1mZu5mZuh5eYSFgIWGgYaFgIiGgYqKiY6LioyMiY2NiYyMio2OiI6OjZCSjZSQi5OSkJGUkpSVk5WVlJWVlZiZlpiZmJ6emp2dnZSko6GhnKGhoKOjoaKnoqSkpKSmpKWmpaampqqrqKurqKqrqq2sqq6urrSyrrCwsLa3tb63tbi4t7q6ur+/vsCbm96Li9iUlMqursmwr9KwsN69veSCguiMjOiOjuaQkOWVleaXmOGfn+aYmOaamuebm+adneecnOeenuiQkOWgoOWsrOasrOWxseW2tue3t+e8vOi+vsHBwcfHx8jIxs7Mx8nJyMvLy8zMy83NzM7Pzs/Pz9PR0dTU1NXV1dXW1tbW1tfX19bb29jY2NnZ2djb29ra2tvb2tvb29za2tzc3N3d3d7e3t/f3+bCwufDw+fGxuTJyejCwujHx+nHx+vPz+rT0+rU1OrX1+vX1+rY2Ojf3+Hh4eLi4uPj4+Hn5+Tk5OXl5ebm5ufn5+nn5+jo6Onp6erp6evr6+zs7PDn5/Dq6vDt7fHv7/Lu7vPu7vPv7/Dw8PHx8fLy8vPz8/Tx8fbz8/T09PX19fX39/b29vj39/j4+Pn4+Pn5+fr5+fr6+vv7+/z7+/z8/P39/f7+/v/+/v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAGAAYAAAI/wDhCRxIsKDBgwgTZis00F27hAbRNSpSaSC7ZM6ePQsXjdmzZekKUpOio0lBVShjJXvYjp07gsEm/dLhqKC2aNG2LesES13BXJTg4dLBi2C7kPDSyQFTRY26c8akZbolkJGOaQTZFTO2LA8KCCA+zDFTp4aggVCCmCtYrJUxNiI4nAjh4o2HGW1CrhvCxGC5cOVqvcCgQQUWGRtanOkG75qOQwXbhWvZ7lOZMIGSsJjihY5AYTowFWRnipUtT6BGWIARY8IXPc1eXtIxrKC7cqJCjdJCIcIBAwRoaLqU6IkRHthGnwPzoEGKDBISMHDAZWAvHUTWjaa1J42NAgAELMBAMGCNwHbWekQxqA4VMkBKSokZE8AKtHLpjuHxo0OSQXfuLKJIOHdc0IECFaxgQivpxHGDDpYc9McS5oBTAhxUbNHFFX2I4Q4fR+iwi0GPCCGLK6rYgQYJWZDhBil7cMMJDjpAAg85L8ETCRDVqAONMuGMA0446rDjEzzi5KDDD4j48g48huxAyCqtODNZOeWcM85DAxEDzDcE+YDEK5u0EostbZ2SyizsQASPE4PAo4466TxVZzptuqmLN266GRAAOw=='</span>
+            <span class="token keyword">if</span> name<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span><span class="token string">'.iso'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                dirimage <span class="token operator">=</span> <span class="token string">'data:image/gif;base64,R0lGODlhGAAYAPf/AKysrLGxsbe3t7i4uLm5uLm5ubq6ury8vL29vb6+vry+wb2+wKfeu7XGsbjNtr3UprnVqbbcvqjOzKTM0KbdwKvX2anZ1b/CxbTbw63R5LHS5b3T5dexrtuxrty+p+KvpOCxo8bLnsvJotjAptTPs9HRtcDAwMHBwcLCwsPDw8PCxMLDxsTDwsTEw8TExMXFxcbGxsfHx8jIyMnJycrJysrKysvLy87Ly8zMzM3Nzc7Ozs/PzsDe3NDQ0NHR0dLR0NLS0tPT09TU1NXV1dXW1tbW1tfX19HZ0dLb0NjV1NrW1djY2NnZ2dra2t3a2tzc3N3d3d7e3d/f3t/f38HU5cPf6sff68/e69Pf6sDi3Nng59zh5d7k5ujEw+nFxOnGxunIx+vLx+zNyePTy+Hf3+3Y0eDg3+Tg3+Dg4OHh4uLi4eLi4uPj4uPj4+Hj5OPk4+Th4OTk4+Tk5OXl5OXl5eXm5ebl5Obm5ebm5ubn5ufn5ufn5+Lm6uXo6unj4+rl5Ojo5+jo6Onp6Onp6erq6erq6urr6+vr6uvr6+vs6+zp6e3r6uzs6+zs7O3t7e3u7e7u7e7u7u/v7u/v7+fv9ezu8e3u8PDp6fHr6/Dw8PHx8PHx8fLy8fLy8vPy8vPz8vPz8/Tz8/T08/T09PX19PX19fX29fb19Pb29vf39vf39/j49/j4+Pn4+Pn5+Pn5+fr6+fr6+vv7+vv7+/z8+/z8/P39/P39/f7+/f7+/v7//////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAGAAYAAAI/wB3CRxIsKBBg4hi6GCyBs+eQIH2PJSIB82QGYgKDnqBowmeRpEiTSo0qVGmSI3oGJkxSOOLGkXkIJpkBEEQHzagZEq5siXBjTOGtJnpwweKBFCE7FTJ0mXQoZH2TIGCh4kjR4jkFGn684UMIXIGTWkSpQ0bOTIbaa3hc+BGGUSeFIkyhxCkT6hKDaKztq3AQS5m3EgSZw4gRplIvbq1KxIUI2w1umDBAQycPIQkgVo1K9etWXSARP6pooGID1/+POKEKtatXLFSfQLCdWChBRIYPPAgBpMpVrV20WIFKpMUF4UKElKwIYOFCCTKKCrUSBWsUpkY3WmR/KcLN1quVPLJgmTRrViBPHlyJAgPDL+7BsW4AyhRJUpcQO3S1YePpUN62FHbXy/sUYgkobQiCSKvnHIED1ZgscUb72l0gh6OsCYLLY60QcYYJWBQgQZUXEBIQYWYYAYnitmSCy2ldHJJGCNAQMEEK3TnVgo5jMJZLra8UoomjfjRBQghOEADfIW88AIdtdyCSyyocMJeHWd40cEPA+4SSGA+TLJLLauAIkkhesgRhxJOLCHDHgXhwVETbTjCiiuiSHIIIGo8UYghTcyAR0GgyDCAAAYMEMAJO/QwAwEAFHCAAQXIMMpBmzhSyCCD4JHGFA0FMkghMxEUEAA7'</span>
+            <span class="token comment" spellcheck="true"># Note: a link to a directory displays with @ and links with /</span>
+            f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'&lt;a href="%s">&lt;img src="%s" width="24" height="24">&amp;nbsp;&amp;nbsp;&amp;nbsp;%s&lt;/a>&lt;br />\n'</span>
+                    <span class="token operator">%</span> <span class="token punctuation">(</span>urllib<span class="token punctuation">.</span>parse<span class="token punctuation">.</span>quote<span class="token punctuation">(</span>linkname<span class="token punctuation">)</span><span class="token punctuation">,</span> dirimage <span class="token punctuation">,</span> html<span class="token punctuation">.</span>escape<span class="token punctuation">(</span>displayname<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>b<span class="token string">"&lt;hr>\n&lt;/body>\n&lt;/html>\n"</span><span class="token punctuation">)</span>
+        length <span class="token operator">=</span> f<span class="token punctuation">.</span>tell<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>seek<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>send_response<span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">"Content-type"</span><span class="token punctuation">,</span> <span class="token string">"text/html"</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">"Content-Length"</span><span class="token punctuation">,</span> str<span class="token punctuation">(</span>length<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>end_headers<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> f
 
-    def translate_path(self, path):
-        &quot;&quot;&quot;Translate a /-separated PATH to the local filename syntax.
+    <span class="token keyword">def</span> <span class="token function">translate_path</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Translate a /-separated PATH to the local filename syntax.
         Components that mean special things to the local file system
         (e.g. drive or directory names) are ignored.  (XXX They should
         probably be diagnosed.)
-        &quot;&quot;&quot;
-        # abandon query parameters
-        path = path.split(&#39;?&#39;,1)[0]
-        path = path.split(&#39;#&#39;,1)[0]
-        path = posixpath.normpath(urllib.parse.unquote(path))
-        words = path.split(&#39;/&#39;)
-        words = [_f for _f in words if _f]
-        path = os.getcwd()
-        for word in words:
-            drive, word = os.path.splitdrive(word)
-            head, word = os.path.split(word)
-            if word in (os.curdir, os.pardir): continue
-            path = os.path.join(path, word)
-        return path
+        """</span>
+        <span class="token comment" spellcheck="true"># abandon query parameters</span>
+        path <span class="token operator">=</span> path<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">'?'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        path <span class="token operator">=</span> path<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">'#'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        path <span class="token operator">=</span> posixpath<span class="token punctuation">.</span>normpath<span class="token punctuation">(</span>urllib<span class="token punctuation">.</span>parse<span class="token punctuation">.</span>unquote<span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        words <span class="token operator">=</span> path<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">)</span>
+        words <span class="token operator">=</span> <span class="token punctuation">[</span>_f <span class="token keyword">for</span> _f <span class="token keyword">in</span> words <span class="token keyword">if</span> _f<span class="token punctuation">]</span>
+        path <span class="token operator">=</span> os<span class="token punctuation">.</span>getcwd<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> word <span class="token keyword">in</span> words<span class="token punctuation">:</span>
+            drive<span class="token punctuation">,</span> word <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>splitdrive<span class="token punctuation">(</span>word<span class="token punctuation">)</span>
+            head<span class="token punctuation">,</span> word <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>split<span class="token punctuation">(</span>word<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> word <span class="token keyword">in</span> <span class="token punctuation">(</span>os<span class="token punctuation">.</span>curdir<span class="token punctuation">,</span> os<span class="token punctuation">.</span>pardir<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">continue</span>
+            path <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>path<span class="token punctuation">,</span> word<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> path
 
-    def copyfile(self, source, outputfile):
-        &quot;&quot;&quot;Copy all data between two file objects.
+    <span class="token keyword">def</span> <span class="token function">copyfile</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> source<span class="token punctuation">,</span> outputfile<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Copy all data between two file objects.
         The SOURCE argument is a file object open for reading
         (or anything with a read() method) and the DESTINATION
         argument is a file object open for writing (or
@@ -683,62 +685,62 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         the block size or perhaps to replace newlines by CRLF
         -- note however that this the default server uses this
         to copy binary data as well.
-        &quot;&quot;&quot;
-        shutil.copyfileobj(source, outputfile)
+        """</span>
+        shutil<span class="token punctuation">.</span>copyfileobj<span class="token punctuation">(</span>source<span class="token punctuation">,</span> outputfile<span class="token punctuation">)</span>
 
-    def guess_type(self, path):
-        &quot;&quot;&quot;Guess the type of a file.
+    <span class="token keyword">def</span> <span class="token function">guess_type</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""Guess the type of a file.
         Argument is a PATH (a filename).
         Return value is a string of the form type/subtype,
         usable for a MIME Content-type header.
-        The default implementation looks the file&#39;s extension
+        The default implementation looks the file's extension
         up in the table self.extensions_map, using application/octet-stream
         as a default; however it would be permissible (if
         slow) to look inside the data to make a better guess.
-        &quot;&quot;&quot;
+        """</span>
 
-        base, ext = posixpath.splitext(path)
-        if ext in self.extensions_map:
-            return self.extensions_map[ext]
-        ext = ext.lower()
-        if ext in self.extensions_map:
-            return self.extensions_map[ext]
-        else:
-            return self.extensions_map[&#39;&#39;]
+        base<span class="token punctuation">,</span> ext <span class="token operator">=</span> posixpath<span class="token punctuation">.</span>splitext<span class="token punctuation">(</span>path<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> ext <span class="token keyword">in</span> self<span class="token punctuation">.</span>extensions_map<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> self<span class="token punctuation">.</span>extensions_map<span class="token punctuation">[</span>ext<span class="token punctuation">]</span>
+        ext <span class="token operator">=</span> ext<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> ext <span class="token keyword">in</span> self<span class="token punctuation">.</span>extensions_map<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> self<span class="token punctuation">.</span>extensions_map<span class="token punctuation">[</span>ext<span class="token punctuation">]</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> self<span class="token punctuation">.</span>extensions_map<span class="token punctuation">[</span><span class="token string">''</span><span class="token punctuation">]</span>
 
-    if not mimetypes.inited:
-        mimetypes.init() # try to read system mime.types
-    extensions_map = mimetypes.types_map.copy()
-    extensions_map.update(&#123;
-        &#39;&#39;: &#39;application/octet-stream&#39;, # Default
-        &#39;.py&#39;: &#39;text/plain&#39;,
-        &#39;.c&#39;: &#39;text/plain&#39;,
-        &#39;.h&#39;: &#39;text/plain&#39;,
-        &#125;)
+    <span class="token keyword">if</span> <span class="token operator">not</span> mimetypes<span class="token punctuation">.</span>inited<span class="token punctuation">:</span>
+        mimetypes<span class="token punctuation">.</span>init<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># try to read system mime.types</span>
+    extensions_map <span class="token operator">=</span> mimetypes<span class="token punctuation">.</span>types_map<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    extensions_map<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;</span>
+        <span class="token string">''</span><span class="token punctuation">:</span> <span class="token string">'application/octet-stream'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true"># Default</span>
+        <span class="token string">'.py'</span><span class="token punctuation">:</span> <span class="token string">'text/plain'</span><span class="token punctuation">,</span>
+        <span class="token string">'.c'</span><span class="token punctuation">:</span> <span class="token string">'text/plain'</span><span class="token punctuation">,</span>
+        <span class="token string">'.h'</span><span class="token punctuation">:</span> <span class="token string">'text/plain'</span><span class="token punctuation">,</span>
+        <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#125;)</span>
 
-parser = argparse.ArgumentParser()
-parser.add_argument(&#39;--bind&#39;, &#39;-b&#39;, default=&#39;&#39;, metavar=&#39;ADDRESS&#39;,
-                        help=&#39;Specify alternate bind address &#39;
-                             &#39;[default: all interfaces]&#39;)
-parser.add_argument(&#39;port&#39;, action=&#39;store&#39;,
-                        default=8000, type=int,
-                        nargs=&#39;?&#39;,
-                        help=&#39;Specify alternate port [default: 8000]&#39;)
-args = parser.parse_args()
+parser <span class="token operator">=</span> argparse<span class="token punctuation">.</span>ArgumentParser<span class="token punctuation">(</span><span class="token punctuation">)</span>
+parser<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">'--bind'</span><span class="token punctuation">,</span> <span class="token string">'-b'</span><span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token string">''</span><span class="token punctuation">,</span> metavar<span class="token operator">=</span><span class="token string">'ADDRESS'</span><span class="token punctuation">,</span>
+                        help<span class="token operator">=</span><span class="token string">'Specify alternate bind address '</span>
+                             <span class="token string">'[default: all interfaces]'</span><span class="token punctuation">)</span>
+parser<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">'port'</span><span class="token punctuation">,</span> action<span class="token operator">=</span><span class="token string">'store'</span><span class="token punctuation">,</span>
+                        default<span class="token operator">=</span><span class="token number">8000</span><span class="token punctuation">,</span> type<span class="token operator">=</span>int<span class="token punctuation">,</span>
+                        nargs<span class="token operator">=</span><span class="token string">'?'</span><span class="token punctuation">,</span>
+                        help<span class="token operator">=</span><span class="token string">'Specify alternate port [default: 8000]'</span><span class="token punctuation">)</span>
+args <span class="token operator">=</span> parser<span class="token punctuation">.</span>parse_args<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-PORT = args.port
-BIND = args.bind
-HOST = BIND
+PORT <span class="token operator">=</span> args<span class="token punctuation">.</span>port
+BIND <span class="token operator">=</span> args<span class="token punctuation">.</span>bind
+HOST <span class="token operator">=</span> BIND
 
-if HOST == &#39;&#39;:
-    HOST = &#39;localhost&#39;
+<span class="token keyword">if</span> HOST <span class="token operator">==</span> <span class="token string">''</span><span class="token punctuation">:</span>
+    HOST <span class="token operator">=</span> <span class="token string">'localhost'</span>
 
-Handler = SimpleHTTPRequestHandler
+Handler <span class="token operator">=</span> SimpleHTTPRequestHandler
 
-with socketserver.TCPServer((BIND, PORT), Handler) as httpd:
-    serve_message = &quot;Serving HTTP on &#123;host&#125; port &#123;port&#125; (http://&#123;host&#125;:&#123;port&#125;/) ...&quot;
-    print(serve_message.format(host=HOST, port=PORT))
-    httpd.serve_forever()</code></pre>
+<span class="token keyword">with</span> socketserver<span class="token punctuation">.</span>TCPServer<span class="token punctuation">(</span><span class="token punctuation">(</span>BIND<span class="token punctuation">,</span> PORT<span class="token punctuation">)</span><span class="token punctuation">,</span> Handler<span class="token punctuation">)</span> <span class="token keyword">as</span> httpd<span class="token punctuation">:</span>
+    serve_message <span class="token operator">=</span> <span class="token string">"Serving HTTP on &amp;#123;host&amp;#125; port &amp;#123;port&amp;#125; (http://&amp;#123;host&amp;#125;:&amp;#123;port&amp;#125;/) ..."</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>serve_message<span class="token punctuation">.</span>format<span class="token punctuation">(</span>host<span class="token operator">=</span>HOST<span class="token punctuation">,</span> port<span class="token operator">=</span>PORT<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    httpd<span class="token punctuation">.</span>serve_forever<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
                 
             </div>

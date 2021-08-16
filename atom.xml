@@ -6,7 +6,7 @@
   <link href="https://roc-may.github.io/atom.xml" rel="self"/>
   
   <link href="https://roc-may.github.io/"/>
-  <updated>2021-08-16T07:59:08.669Z</updated>
+  <updated>2021-08-16T08:05:50.076Z</updated>
   <id>https://roc-may.github.io/</id>
   
   <author>
@@ -21,14 +21,14 @@
     <link href="https://roc-may.github.io/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/"/>
     <id>https://roc-may.github.io/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/</id>
     <published>2021-08-16T07:56:07.000Z</published>
-    <updated>2021-08-16T07:59:08.669Z</updated>
+    <updated>2021-08-16T08:05:50.076Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;##目录&lt;br&gt;###操作环境&lt;br&gt;python3.6+ubuntu18.04，&lt;br&gt;###操作方法&lt;br&gt;终端中输入&lt;br&gt;python3 -m</summary>
+    <summary type="html">&lt;h2 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h2&gt;&lt;h3 id=&quot;操作环境&quot;&gt;&lt;a href=&quot;#操作环境&quot; class=&quot;headerlink&quot;</summary>
         
       
     
@@ -42,15 +42,14 @@
     <link href="https://roc-may.github.io/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/"/>
     <id>https://roc-may.github.io/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/</id>
     <published>2021-08-16T07:50:47.000Z</published>
-    <updated>2021-08-16T07:59:28.392Z</updated>
+    <updated>2021-08-16T08:05:39.763Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;##目录&lt;br&gt;###前述&lt;br&gt;听着好像有点多余，原本就是要把灰度图转为csv来读取。。&lt;br&gt;###代码&lt;br&gt;代码功能详见注释&lt;/p&gt;
-&lt;pre class=&quot; language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span</summary>
+    <summary type="html">&lt;h2 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h2&gt;&lt;h3 id=&quot;前述&quot;&gt;&lt;a href=&quot;#前述&quot; class=&quot;headerlink&quot;</summary>
         
       
     
