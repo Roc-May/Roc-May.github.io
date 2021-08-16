@@ -386,9 +386,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Virtuoso/">
+                                <span class="chip bg-color">Virtuoso</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -424,8 +428,8 @@
                 <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h3 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h3><p>1.不要在cds.lib里面定义一个名称全部为数字的工程文件夹;</p>
 <p>2.需要在服务器的cadence文件夹下找一下IUSxx,在该目录下找到connectLib文件夹,整个复制到自己的工作目录下或者定义好绝对路径。<br>connectLib中定义的是关于数字模块接口电压等等的定义,所以是做ams混合信号电路仿真时必需的。</p>
 <p>3.IC617版本的virtuoso需要INCISIVE132以及更高版本的，INCISIVE最后一版更新完成于2015年，最后一版是152版本的，irun -version可以查看INCISIVE的版本；之后的Virtuoso版本需要的是Xcelillum.</p>
-<p>4.关于ams仿真提示error，cannot compile ahdlcmi file….,这个是由于lib无法转换导致的。<br>  <img src="E:/nodejs/nodejs_install/myblog/error1.jpg" alt="avatar"><br>  <img src="E:/nodejs/nodejs_install/myblog/system_lib1.png" alt="avatar"><br>  也即这里的一些库索引需要修改为Virtuoso版本匹配的。【可能系统中同时有615和617多个版本，然后在bashrc和.cshrc中需要区分，在cds.lib中也要调用正确对应的系统库】</p>
-<p>5.<img src="E:/nodejs/nodejs_install/myblog/system_lib2.png" alt="avatar"><br>  include所定义的库也要写。include进来的cds.lib软链接到一些其他的库和connectlib，会调用一些virtuoso下的库，然后在incisiv下编译。</p>
+<p>4.关于ams仿真提示error，cannot compile ahdlcmi file….,这个是由于lib无法转换导致的。<br>  <img src="https://gitee.com/Gui_xin_peng/picture_warehouse/raw/master/img/error1.jpg" alt="avatar"><br>  <img src="https://gitee.com/Gui_xin_peng/picture_warehouse/raw/master/img/system_lib1.png" alt="avatar"><br>  也即这里的一些库索引需要修改为Virtuoso版本匹配的。【可能系统中同时有615和617多个版本，然后在bashrc和.cshrc中需要区分，在cds.lib中也要调用正确对应的系统库】</p>
+<p>5.<img src="https://gitee.com/Gui_xin_peng/picture_warehouse/raw/master/img/system_lib2.png" alt="avatar"><br>  include所定义的库也要写。include进来的cds.lib软链接到一些其他的库和connectlib，会调用一些virtuoso下的库，然后在incisiv下编译。</p>
 
                 
             </div>
@@ -489,7 +493,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/Virtuoso/">
+                                    <span class="chip bg-color">Virtuoso</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -692,6 +700,14 @@
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Virtuoso/">
+                        <span class="chip bg-color">Virtuoso</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
