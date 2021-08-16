@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="怎么写博客, Gxp">
+    <meta name="keywords" content="基于python的文件传输助手, Gxp">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>怎么写博客 | Gxp&#39;s blogs</title>
+    <title>基于python的文件传输助手 | Gxp&#39;s blogs</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -267,12 +267,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">怎么写博客</h1>
+                    <h1 class="description center-align post-title">基于python的文件传输助手</h1>
                 </div>
             </div>
         </div>
@@ -400,7 +400,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-08-13
+                    2021-08-16
                 </div>
                 
 
@@ -421,7 +421,324 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>正文<br>首先在hexo目录下（也就是myblog目录）下git bash，<br>之后在bash中输入hexo clean<br>hexo new “xxxxxx”<br>然后用markdown编辑器在_post文件夹中编辑markdown文件<br>编辑完成之后<br>在bash中输入hexo g<br>hexo s<br>如果默认的4000端口被占用<br>bash中输入hexo server -p 5000<br>则可以通过5000端口访问网站<br>检查无误后<br>通过hexo d（或者hexo deploy）将网页发布到网站上。<br>常用的一些命令有：<br>hexo new “name”       # 新建文章<br>hexo new page “name”  # 新建页面<br>hexo g                # 生成页面<br>hexo d                # 部署<br>hexo g -d             # 生成页面并部署<br>hexo s                # 本地预览<br>hexo clean            # 清除缓存和已生成的静态文件<br>hexo help             # 帮助</p>
+                <p>##目录<br>###操作环境<br>python3.6+ubuntu18.04，<br>###操作方法<br>终端中输入<br>python3 -m http.server（写python3是为了避免在系统同时存在python2和python3时，和python2冲突）<br>打开手机浏览器，网址栏输入<br>你的电脑ip:8000<br>例如：192.168.<strong><em>.</em></strong>:8000<br>监听你的电脑的8000号端口就行，这样你就可以看到你的电脑里面的文件了。<br>###注意事项<br>注意哦，手机和电脑要在同一个局域网下面，也就是说要连一个网。<br>不过就是只能看，不能上传，有升级的空间。<br>github上看到过一个不错的脚本，分享一下。<br>###代码</p>
+<pre><code>#!/usr/bin/env python3
+
+&quot;&quot;&quot;Simple HTTP Server With Upload.
+This module builds on http.server by implementing the standard GET
+and HEAD requests in a fairly straightforward manner.
+see: https://gist.github.com/UniIsland/3346170
+&quot;&quot;&quot;
+
+
+__version__ = &quot;0.1&quot;
+__all__ = [&quot;SimpleHTTPRequestHandler&quot;]
+__author__ = &quot;bones7456&quot;
+__home_page__ = &quot;https://gist.github.com/UniIsland/3346170&quot;
+
+import os
+import posixpath
+import http.server
+import socketserver
+import urllib.request, urllib.parse, urllib.error
+import html
+import shutil
+import mimetypes
+import re
+import argparse
+import base64
+
+from io import BytesIO
+
+class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
+
+    &quot;&quot;&quot;Simple HTTP request handler with GET/HEAD/POST commands.
+    This serves files from the current directory and any of its
+    subdirectories.  The MIME type for files is determined by
+    calling the .guess_type() method. And can reveive file uploaded
+    by client.
+    The GET/HEAD/POST requests are identical except that the HEAD
+    request omits the actual contents of the file.
+    &quot;&quot;&quot;
+
+    server_version = &quot;SimpleHTTPWithUpload/&quot; + __version__
+
+    def do_GET(self):
+        &quot;&quot;&quot;Serve a GET request.&quot;&quot;&quot;
+        f = self.send_head()
+        if f:
+            self.copyfile(f, self.wfile)
+            f.close()
+
+    def do_HEAD(self):
+        &quot;&quot;&quot;Serve a HEAD request.&quot;&quot;&quot;
+        f = self.send_head()
+        if f:
+            f.close()
+
+    def do_POST(self):
+        &quot;&quot;&quot;Serve a POST request.&quot;&quot;&quot;
+        r, info = self.deal_post_data()
+        print((r, info, &quot;by: &quot;, self.client_address))
+        f = BytesIO()
+        f.write(b&#39;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;&#39;)
+        f.write(b&quot;&lt;html&gt;\n&lt;title&gt;Upload Result Page&lt;/title&gt;\n&quot;)
+        f.write(b&quot;&lt;body&gt;\n&lt;h2&gt;Upload Result Page&lt;/h2&gt;\n&quot;)
+        f.write(b&quot;&lt;hr&gt;\n&quot;)
+        if r:
+            f.write(b&quot;&lt;strong&gt;Success:&lt;/strong&gt;&quot;)
+        else:
+            f.write(b&quot;&lt;strong&gt;Failed:&lt;/strong&gt;&quot;)
+        f.write(info.encode())
+        f.write((&quot;&lt;br&gt;&lt;a href=\&quot;%s\&quot;&gt;back&lt;/a&gt;&quot; % self.headers[&#39;referer&#39;]).encode())
+        f.write(b&quot;&lt;hr&gt;&lt;small&gt;Powered By: bones7456, check new version at &quot;)
+        f.write(b&quot;&lt;a href=\&quot;https://gist.github.com/UniIsland/3346170\&quot;&gt;&quot;)
+        f.write(b&quot;here&lt;/a&gt;.&lt;/small&gt;&lt;/body&gt;\n&lt;/html&gt;\n&quot;)
+        length = f.tell()
+        f.seek(0)
+        self.send_response(200)
+        self.send_header(&quot;Content-type&quot;, &quot;text/html&quot;)
+        self.send_header(&quot;Content-Length&quot;, str(length))
+        self.end_headers()
+        if f:
+            self.copyfile(f, self.wfile)
+            f.close()
+
+    def deal_post_data(self):
+        uploaded_files = []
+        content_type = self.headers[&#39;content-type&#39;]
+        if not content_type:
+            return (False, &quot;Content-Type header doesn&#39;t contain boundary&quot;)
+        boundary = content_type.split(&quot;=&quot;)[1].encode()
+        remainbytes = int(self.headers[&#39;content-length&#39;])
+        line = self.rfile.readline()
+        remainbytes -= len(line)
+        if not boundary in line:
+            return (False, &quot;Content NOT begin with boundary&quot;)
+        while remainbytes &gt; 0:
+            line = self.rfile.readline()
+            remainbytes -= len(line)
+            fn = re.findall(r&#39;Content-Disposition.*name=&quot;file&quot;; filename=&quot;(.*)&quot;&#39;, line.decode())
+            if not fn:
+                return (False, &quot;Can&#39;t find out file name...&quot;)
+            path = self.translate_path(self.path)
+            fn = os.path.join(path, fn[0])
+            line = self.rfile.readline()
+            remainbytes -= len(line)
+            line = self.rfile.readline()
+            remainbytes -= len(line)
+            try:
+                out = open(fn, &#39;wb&#39;)
+            except IOError:
+                return (False, &quot;Can&#39;t create file to write, do you have permission to write?&quot;)
+            else:
+                with out:
+                    preline = self.rfile.readline()
+                    remainbytes -= len(preline)
+                    while remainbytes &gt; 0:
+                        line = self.rfile.readline()
+                        remainbytes -= len(line)
+                        if boundary in line:
+                            preline = preline[0:-1]
+                            if preline.endswith(b&#39;\r&#39;):
+                                preline = preline[0:-1]
+                            out.write(preline)
+                            uploaded_files.append(fn)
+                            break
+                        else:
+                            out.write(preline)
+                            preline = line
+        return (True, &quot;File &#39;%s&#39; upload success!&quot; % &quot;,&quot;.join(uploaded_files))
+
+    def send_head(self):
+        &quot;&quot;&quot;Common code for GET and HEAD commands.
+        This sends the response code and MIME headers.
+        Return value is either a file object (which has to be copied
+        to the outputfile by the caller unless the command was HEAD,
+        and must be closed by the caller under all circumstances), or
+        None, in which case the caller has nothing further to do.
+        &quot;&quot;&quot;
+        path = self.translate_path(self.path)
+        f = None
+        if os.path.isdir(path):
+            if not self.path.endswith(&#39;/&#39;):
+                # redirect browser - doing basically what apache does
+                self.send_response(301)
+                self.send_header(&quot;Location&quot;, self.path + &quot;/&quot;)
+                self.end_headers()
+                return None
+            for index in &quot;index.html&quot;, &quot;index.htm&quot;:
+                index = os.path.join(path, index)
+                if os.path.exists(index):
+                    path = index
+                    break
+            else:
+                return self.list_directory(path)
+        ctype = self.guess_type(path)
+        try:
+            # Always read in binary mode. Opening files in text mode may cause
+            # newline translations, making the actual size of the content
+            # transmitted *less* than the content-length!
+            f = open(path, &#39;rb&#39;)
+        except IOError:
+            self.send_error(404, &quot;File not found&quot;)
+            return None
+        self.send_response(200)
+        self.send_header(&quot;Content-type&quot;, ctype)
+        fs = os.fstat(f.fileno())
+        self.send_header(&quot;Content-Length&quot;, str(fs[6]))
+        self.send_header(&quot;Last-Modified&quot;, self.date_time_string(fs.st_mtime))
+        self.end_headers()
+        return f
+
+    def list_directory(self, path):
+        &quot;&quot;&quot;Helper to produce a directory listing (absent index.html).
+        Return value is either a file object, or None (indicating an
+        error).  In either case, the headers are sent, making the
+        interface the same as for send_head().
+        &quot;&quot;&quot;
+        try:
+            list = os.listdir(path)
+        except os.error:
+            self.send_error(404, &quot;No permission to list directory&quot;)
+            return None
+        list.sort(key=lambda a: a.lower())
+        f = BytesIO()
+        displaypath = html.escape(urllib.parse.unquote(self.path))
+        f.write(b&#39;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;&#39;)
+        f.write((&quot;&lt;html&gt;\n&lt;title&gt;Directory listing for %s&lt;/title&gt;\n&quot; % displaypath).encode())
+        f.write(b&#39;&lt;style type=&quot;text/css&quot;&gt;\n&#39;)
+        f.write(b&#39;a &#123; text-decoration: none; &#125;\n&#39;)
+        f.write(b&#39;a:link &#123; text-decoration: none; font-weight: bold; color: #0000ff; &#125;\n&#39;)
+        f.write(b&#39;a:visited &#123; text-decoration: none; font-weight: bold; color: #0000ff; &#125;\n&#39;)
+        f.write(b&#39;a:active &#123; text-decoration: none; font-weight: bold; color: #0000ff; &#125;\n&#39;)
+        f.write(b&#39;a:hover &#123; text-decoration: none; font-weight: bold; color: #ff0000; &#125;\n&#39;)
+        f.write(b&#39;&lt;/style&gt;\n&#39;)
+        f.write((&quot;&lt;body&gt;\n&lt;h2&gt;Directory listing for %s&lt;/h2&gt;\n&quot; % displaypath).encode())
+        f.write(b&quot;&lt;hr&gt;\n&quot;)
+        f.write(b&quot;&lt;form ENCTYPE=\&quot;multipart/form-data\&quot; method=\&quot;post\&quot;&gt;&quot;)
+        f.write(b&quot;&lt;input name=\&quot;file\&quot; type=\&quot;file\&quot; multiple/&gt;&quot;)
+        f.write(b&quot;&lt;input type=\&quot;submit\&quot; value=\&quot;upload\&quot;/&gt;&lt;/form&gt;\n&quot;)
+        f.write(b&quot;&lt;hr&gt;\n&quot;)
+        f.write(b&#39;&lt;a href=&quot;../&quot;&gt;&lt;img src=&quot;data:image/gif;base64,R0lGODlhGAAYAMIAAP///7+/v7u7u1ZWVTc3NwAAAAAAAAAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAEALAAAAAAYABgAAANKGLrc/jBKNgIhM4rLcaZWd33KJnJkdaKZuXqTugYFeSpFTVpLnj86oM/n+DWGyCAuyUQymlDiMtrsUavP6xCizUB3NCW4Ny6bJwkAOw==&quot; alt=&quot;[PARENTDIR]&quot; width=&quot;24&quot; height=&quot;24&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;Parent Directory&lt;/a&gt;&lt;br /&gt;\n&#39;)
+        for name in list:
+            dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAMIAAP///7+/v7u7u1ZWVTc3NwAAAAAAAAAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAEALAAAAAAYABgAAANdGLrc/jAuQaulQwYBuv9cFnFfSYoPWXoq2qgrALsTYN+4QOg6veFAG2FIdMCCNgvBiAxWlq8mUseUBqGMoxWArW1xXYXWGv59b+WxNH1GV9vsNvd9jsMhxLw+70gAADs=&#39;
+            fullname = os.path.join(path, name)
+            displayname = linkname = name
+            # Append / for directories or @ for symbolic links
+            if os.path.isdir(fullname):
+                dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAMIAAP///+jNlr+/v6KXfm5SG2lPGjc3NwAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAIALAAAAAAYABgAAANjKLrc/jDKSau9WJbN9y1BKIZFVQzjOHRdsw1wDIMpyYAFke9ELa4Lmm9IWBkUwqHPiFQSmYKkU1U4Rqe1YrWJTUGlWK0VjP12R2Jubx1guwPQqGxOj22DrLzeujD4/4CBgAoJADs=&#39;
+                displayname = name + &quot;/&quot;
+                linkname = name + &quot;/&quot;
+            if os.path.islink(fullname):
+                dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAPf/AJaWlpqampubm5ycnJ2dnZ6enp+fn6CgoKGhoaKioqOjo6SkpKWlpaampqioqKmpqaqqqqurq6ysrK2tra6urq+vr7CwsLGxsbKysrOzs7S0tLW1tba2tre3t7i4uLm5ubq6uru7u7y8vL29vb6+vr+/v8LCwsPDw8bGxtDQ0NTU1NXV1dbW1tfX19jY2Nra2tzc3N3d3eDg4OHh4eLi4uPj4+Tk5OXl5efn5+np6erq6uvr6+zs7O7u7u/v7/Dw8PHx8fLy8vPz8/T09PX19fb29vf39/j4+Pr6+vv7+/39/f7+/v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAGAAYAAAI/wCZCBxIsKDBgwgLrsigwUXChEVGYNBwIYKIJA8LFunwocKGDA8ieMg4kAiHDxRmCGyhIAEKkhtR2iCYYYEAkiNQ3ijYIQGAjDkuVFBJsIcBAhcyttCgoSCQBQcUFMn44gIFEiwE/oAqIAfJIREeQLDAZIeCAwO8IuQRowYSIxQgBFhAoQBatQaFiLCQoQIFCxEMREUwoAEPhEA0dMQwQSwCIEFYpKCR8IfiCjWYgJCr4AhJyx13CFRhQYECGBmRcKwgmmAEBCsyltBQQUfBGwUG4MjoYMOIgjsSIJBAskGGEAR3IEhw4AdJExIeyBCIY/kBHySZLNEwgcGGDQYQNBbPLpAIBgULEhB4AIQ8wRMFBIhQ4j4gADs=&#39;
+                displayname = name + &quot;@&quot;
+            if name.endswith((&#39;.bmp&#39;,&#39;.gif&#39;,&#39;.jpg&#39;,&#39;.png&#39;)):
+                dirimage = name
+            if name.endswith((&#39;.avi&#39;,&#39;.mpg&#39;)):
+                dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAMIAAP///7+/v7u7u1ZWVTc3NwAAAAAAAAAAACH+RFRoaXMgaWNvbiBpcyBpbiB0aGUgcHVibGljIGRvbWFpbi4gMTk5NSBLZXZpbiBIdWdoZXMsIGtldmluaEBlaXQuY29tACH5BAEAAAEALAAAAAAYABgAAANvGLrc/jAuQqu99BEh8OXE4GzdYJ4mQIZjNXAwp7oj+MbyKjY6ntstyg03E9ZKPoEKyLMll6UgAUCtVi07xspTYWptqBOUxXM9scfQ2Ttx+sbZifmNbiLpbEUPHy1TrIB1Xx1cFHkBW4VODmGNjQ4JADs=&#39;
+            if name.endswith((&#39;.idx&#39;,&#39;.srt&#39;,&#39;.sub&#39;)):
+                dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAPf/AAAbDiAfDSoqHjQlADs+J3sxJ0BALERHMk5LN1pSPUZHRk9NQU1OR05ZUFBRRFVXTVdYTVtVQFlVRFtbSF5bTVZWUltbUFlZVFtcVlxdWl5eWl1gWmBiV2FiXWNhXGRjXWlpYmtqZ2xtZmxsaG5ubHJva3Jzb3J0bHN0b3Z5dHd8eXh4dX18dXx/dnt8e31+eahMP4JdWIdnZox4cpVoYKJkXrxqablwcNA6Otg7O/8AAPwHB/0GBvgODvsMDPMbG/ceHvkSEuYqKvYqKvU2NvM6OvQ6OsFQUNVbW8N4eNd0duNeXu9aWvFUVOVqau1jY+1mZu5mZuh5eYSFgIWGgYaFgIiGgYqKiY6LioyMiY2NiYyMio2OiI6OjZCSjZSQi5OSkJGUkpSVk5WVlJWVlZiZlpiZmJ6emp2dnZSko6GhnKGhoKOjoaKnoqSkpKSmpKWmpaampqqrqKurqKqrqq2sqq6urrSyrrCwsLa3tb63tbi4t7q6ur+/vsCbm96Li9iUlMqursmwr9KwsN69veSCguiMjOiOjuaQkOWVleaXmOGfn+aYmOaamuebm+adneecnOeenuiQkOWgoOWsrOasrOWxseW2tue3t+e8vOi+vsHBwcfHx8jIxs7Mx8nJyMvLy8zMy83NzM7Pzs/Pz9PR0dTU1NXV1dXW1tbW1tfX19bb29jY2NnZ2djb29ra2tvb2tvb29za2tzc3N3d3d7e3t/f3+bCwufDw+fGxuTJyejCwujHx+nHx+vPz+rT0+rU1OrX1+vX1+rY2Ojf3+Hh4eLi4uPj4+Hn5+Tk5OXl5ebm5ufn5+nn5+jo6Onp6erp6evr6+zs7PDn5/Dq6vDt7fHv7/Lu7vPu7vPv7/Dw8PHx8fLy8vPz8/Tx8fbz8/T09PX19fX39/b29vj39/j4+Pn4+Pn5+fr5+fr6+vv7+/z7+/z8/P39/f7+/v/+/v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAGAAYAAAI/wDhCRxIsKDBgwgTZis00F27hAbRNSpSaSC7ZM6ePQsXjdmzZekKUpOio0lBVShjJXvYjp07gsEm/dLhqKC2aNG2LesES13BXJTg4dLBi2C7kPDSyQFTRY26c8akZbolkJGOaQTZFTO2LA8KCCA+zDFTp4aggVCCmCtYrJUxNiI4nAjh4o2HGW1CrhvCxGC5cOVqvcCgQQUWGRtanOkG75qOQwXbhWvZ7lOZMIGSsJjihY5AYTowFWRnipUtT6BGWIARY8IXPc1eXtIxrKC7cqJCjdJCIcIBAwRoaLqU6IkRHthGnwPzoEGKDBISMHDAZWAvHUTWjaa1J42NAgAELMBAMGCNwHbWekQxqA4VMkBKSokZE8AKtHLpjuHxo0OSQXfuLKJIOHdc0IECFaxgQivpxHGDDpYc9McS5oBTAhxUbNHFFX2I4Q4fR+iwi0GPCCGLK6rYgQYJWZDhBil7cMMJDjpAAg85L8ETCRDVqAONMuGMA0446rDjEzzi5KDDD4j48g48huxAyCqtODNZOeWcM85DAxEDzDcE+YDEK5u0EostbZ2SyizsQASPE4PAo4466TxVZzptuqmLN266GRAAOw==&#39;
+            if name.endswith(&#39;.iso&#39;):
+                dirimage = &#39;data:image/gif;base64,R0lGODlhGAAYAPf/AKysrLGxsbe3t7i4uLm5uLm5ubq6ury8vL29vb6+vry+wb2+wKfeu7XGsbjNtr3UprnVqbbcvqjOzKTM0KbdwKvX2anZ1b/CxbTbw63R5LHS5b3T5dexrtuxrty+p+KvpOCxo8bLnsvJotjAptTPs9HRtcDAwMHBwcLCwsPDw8PCxMLDxsTDwsTEw8TExMXFxcbGxsfHx8jIyMnJycrJysrKysvLy87Ly8zMzM3Nzc7Ozs/PzsDe3NDQ0NHR0dLR0NLS0tPT09TU1NXV1dXW1tbW1tfX19HZ0dLb0NjV1NrW1djY2NnZ2dra2t3a2tzc3N3d3d7e3d/f3t/f38HU5cPf6sff68/e69Pf6sDi3Nng59zh5d7k5ujEw+nFxOnGxunIx+vLx+zNyePTy+Hf3+3Y0eDg3+Tg3+Dg4OHh4uLi4eLi4uPj4uPj4+Hj5OPk4+Th4OTk4+Tk5OXl5OXl5eXm5ebl5Obm5ebm5ubn5ufn5ufn5+Lm6uXo6unj4+rl5Ojo5+jo6Onp6Onp6erq6erq6urr6+vr6uvr6+vs6+zp6e3r6uzs6+zs7O3t7e3u7e7u7e7u7u/v7u/v7+fv9ezu8e3u8PDp6fHr6/Dw8PHx8PHx8fLy8fLy8vPy8vPz8vPz8/Tz8/T08/T09PX19PX19fX29fb19Pb29vf39vf39/j49/j4+Pn4+Pn5+Pn5+fr6+fr6+vv7+vv7+/z8+/z8/P39/P39/f7+/f7+/v7//////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAGAAYAAAI/wB3CRxIsKBBg4hi6GCyBs+eQIH2PJSIB82QGYgKDnqBowmeRpEiTSo0qVGmSI3oGJkxSOOLGkXkIJpkBEEQHzagZEq5siXBjTOGtJnpwweKBFCE7FTJ0mXQoZH2TIGCh4kjR4jkFGn684UMIXIGTWkSpQ0bOTIbaa3hc+BGGUSeFIkyhxCkT6hKDaKztq3AQS5m3EgSZw4gRplIvbq1KxIUI2w1umDBAQycPIQkgVo1K9etWXSARP6pooGID1/+POKEKtatXLFSfQLCdWChBRIYPPAgBpMpVrV20WIFKpMUF4UKElKwIYOFCCTKKCrUSBWsUpkY3WmR/KcLN1quVPLJgmTRrViBPHlyJAgPDL+7BsW4AyhRJUpcQO3S1YePpUN62FHbXy/sUYgkobQiCSKvnHIED1ZgscUb72l0gh6OsCYLLY60QcYYJWBQgQZUXEBIQYWYYAYnitmSCy2ldHJJGCNAQMEEK3TnVgo5jMJZLra8UoomjfjRBQghOEADfIW88AIdtdyCSyyocMJeHWd40cEPA+4SSGA+TLJLLauAIkkhesgRhxJOLCHDHgXhwVETbTjCiiuiSHIIIGo8UYghTcyAR0GgyDCAAAYMEMAJO/QwAwEAFHCAAQXIMMpBmzhSyCCD4JHGFA0FMkghMxEUEAA7&#39;
+            # Note: a link to a directory displays with @ and links with /
+            f.write((&#39;&lt;a href=&quot;%s&quot;&gt;&lt;img src=&quot;%s&quot; width=&quot;24&quot; height=&quot;24&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;%s&lt;/a&gt;&lt;br /&gt;\n&#39;
+                    % (urllib.parse.quote(linkname), dirimage , html.escape(displayname))).encode())
+        f.write(b&quot;&lt;hr&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n&quot;)
+        length = f.tell()
+        f.seek(0)
+        self.send_response(200)
+        self.send_header(&quot;Content-type&quot;, &quot;text/html&quot;)
+        self.send_header(&quot;Content-Length&quot;, str(length))
+        self.end_headers()
+        return f
+
+    def translate_path(self, path):
+        &quot;&quot;&quot;Translate a /-separated PATH to the local filename syntax.
+        Components that mean special things to the local file system
+        (e.g. drive or directory names) are ignored.  (XXX They should
+        probably be diagnosed.)
+        &quot;&quot;&quot;
+        # abandon query parameters
+        path = path.split(&#39;?&#39;,1)[0]
+        path = path.split(&#39;#&#39;,1)[0]
+        path = posixpath.normpath(urllib.parse.unquote(path))
+        words = path.split(&#39;/&#39;)
+        words = [_f for _f in words if _f]
+        path = os.getcwd()
+        for word in words:
+            drive, word = os.path.splitdrive(word)
+            head, word = os.path.split(word)
+            if word in (os.curdir, os.pardir): continue
+            path = os.path.join(path, word)
+        return path
+
+    def copyfile(self, source, outputfile):
+        &quot;&quot;&quot;Copy all data between two file objects.
+        The SOURCE argument is a file object open for reading
+        (or anything with a read() method) and the DESTINATION
+        argument is a file object open for writing (or
+        anything with a write() method).
+        The only reason for overriding this would be to change
+        the block size or perhaps to replace newlines by CRLF
+        -- note however that this the default server uses this
+        to copy binary data as well.
+        &quot;&quot;&quot;
+        shutil.copyfileobj(source, outputfile)
+
+    def guess_type(self, path):
+        &quot;&quot;&quot;Guess the type of a file.
+        Argument is a PATH (a filename).
+        Return value is a string of the form type/subtype,
+        usable for a MIME Content-type header.
+        The default implementation looks the file&#39;s extension
+        up in the table self.extensions_map, using application/octet-stream
+        as a default; however it would be permissible (if
+        slow) to look inside the data to make a better guess.
+        &quot;&quot;&quot;
+
+        base, ext = posixpath.splitext(path)
+        if ext in self.extensions_map:
+            return self.extensions_map[ext]
+        ext = ext.lower()
+        if ext in self.extensions_map:
+            return self.extensions_map[ext]
+        else:
+            return self.extensions_map[&#39;&#39;]
+
+    if not mimetypes.inited:
+        mimetypes.init() # try to read system mime.types
+    extensions_map = mimetypes.types_map.copy()
+    extensions_map.update(&#123;
+        &#39;&#39;: &#39;application/octet-stream&#39;, # Default
+        &#39;.py&#39;: &#39;text/plain&#39;,
+        &#39;.c&#39;: &#39;text/plain&#39;,
+        &#39;.h&#39;: &#39;text/plain&#39;,
+        &#125;)
+
+parser = argparse.ArgumentParser()
+parser.add_argument(&#39;--bind&#39;, &#39;-b&#39;, default=&#39;&#39;, metavar=&#39;ADDRESS&#39;,
+                        help=&#39;Specify alternate bind address &#39;
+                             &#39;[default: all interfaces]&#39;)
+parser.add_argument(&#39;port&#39;, action=&#39;store&#39;,
+                        default=8000, type=int,
+                        nargs=&#39;?&#39;,
+                        help=&#39;Specify alternate port [default: 8000]&#39;)
+args = parser.parse_args()
+
+PORT = args.port
+BIND = args.bind
+HOST = BIND
+
+if HOST == &#39;&#39;:
+    HOST = &#39;localhost&#39;
+
+Handler = SimpleHTTPRequestHandler
+
+with socketserver.TCPServer((BIND, PORT), Handler) as httpd:
+    serve_message = &quot;Serving HTTP on &#123;host&#125; port &#123;port&#125; (http://&#123;host&#125;:&#123;port&#125;/) ...&quot;
+    print(serve_message.format(host=HOST, port=PORT))
+    httpd.serve_forever()</code></pre>
 
                 
             </div>
@@ -448,7 +765,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://roc-may.github.io/2021/08/13/zen-me-xie-bo-ke/">https://roc-may.github.io/2021/08/13/zen-me-xie-bo-ke/</a>
+                    <a href="https://roc-may.github.io/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/">https://roc-may.github.io/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -660,13 +977,13 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/2021/08/13/zen-me-xie-bo-ke/">
+                <a href="/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="怎么写博客">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="基于python的文件传输助手">
                         
-                        <span class="card-title">怎么写博客</span>
+                        <span class="card-title">基于python的文件传输助手</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -677,7 +994,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-13
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-16
                             </span>
                         <span class="publish-author">
                             
@@ -698,13 +1015,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/01/14/hello-world/">
+                <a href="/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="将csv转为对应的灰度图">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">将csv转为对应的灰度图</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -715,7 +1032,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-16
                             </span>
                         <span class="publish-author">
                             

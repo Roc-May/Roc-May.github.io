@@ -6,7 +6,7 @@
   <link href="https://roc-may.github.io/atom.xml" rel="self"/>
   
   <link href="https://roc-may.github.io/"/>
-  <updated>2021-08-13T06:37:24.045Z</updated>
+  <updated>2021-08-16T07:59:08.669Z</updated>
   <id>https://roc-may.github.io/</id>
   
   <author>
@@ -17,18 +17,18 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>怎么写博客</title>
-    <link href="https://roc-may.github.io/2021/08/13/zen-me-xie-bo-ke/"/>
-    <id>https://roc-may.github.io/2021/08/13/zen-me-xie-bo-ke/</id>
-    <published>2021-08-13T06:32:43.000Z</published>
-    <updated>2021-08-13T06:37:24.045Z</updated>
+    <title>基于python的文件传输助手</title>
+    <link href="https://roc-may.github.io/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/"/>
+    <id>https://roc-may.github.io/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/</id>
+    <published>2021-08-16T07:56:07.000Z</published>
+    <updated>2021-08-16T07:59:08.669Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;正文&lt;br&gt;首先在hexo目录下（也就是myblog目录）下git bash，&lt;br&gt;之后在bash中输入hexo clean&lt;br&gt;hexo new</summary>
+    <summary type="html">&lt;p&gt;##目录&lt;br&gt;###操作环境&lt;br&gt;python3.6+ubuntu18.04，&lt;br&gt;###操作方法&lt;br&gt;终端中输入&lt;br&gt;python3 -m</summary>
         
       
     
@@ -38,18 +38,19 @@
   </entry>
   
   <entry>
-    <title>Hello World</title>
-    <link href="https://roc-may.github.io/2021/01/14/hello-world/"/>
-    <id>https://roc-may.github.io/2021/01/14/hello-world/</id>
-    <published>2021-01-14T12:19:51.316Z</published>
-    <updated>2021-01-14T12:19:51.316Z</updated>
+    <title>将csv转为对应的灰度图</title>
+    <link href="https://roc-may.github.io/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/"/>
+    <id>https://roc-may.github.io/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/</id>
+    <published>2021-08-16T07:50:47.000Z</published>
+    <updated>2021-08-16T07:59:28.392Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
+    <summary type="html">&lt;p&gt;##目录&lt;br&gt;###前述&lt;br&gt;听着好像有点多余，原本就是要把灰度图转为csv来读取。。&lt;br&gt;###代码&lt;br&gt;代码功能详见注释&lt;/p&gt;
+&lt;pre class=&quot; language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span</summary>
         
       
     
