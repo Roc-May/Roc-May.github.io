@@ -6,7 +6,7 @@
   <link href="https://roc-may.github.io/atom.xml" rel="self"/>
   
   <link href="https://roc-may.github.io/"/>
-  <updated>2021-08-19T03:30:46.392Z</updated>
+  <updated>2021-08-30T03:58:36.314Z</updated>
   <id>https://roc-may.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>shell脚本各种符号的含义</title>
+    <link href="https://roc-may.github.io/2021/08/30/shell-jiao-ben-ge-chong-fu-hao-de-han-yi/"/>
+    <id>https://roc-may.github.io/2021/08/30/shell-jiao-ben-ge-chong-fu-hao-de-han-yi/</id>
+    <published>2021-08-30T03:22:35.000Z</published>
+    <updated>2021-08-30T03:58:36.314Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h2&gt;&lt;h3 id=&quot;解释&quot;&gt;&lt;a href=&quot;#解释&quot; class=&quot;headerlink&quot; title=&quot;解释&quot;&gt;&lt;/a&gt;解释&lt;/h3&gt;&lt;pre</summary>
+        
+      
+    
+    
+    
+    
+    <category term="bash" scheme="https://roc-may.github.io/tags/bash/"/>
+    
+  </entry>
   
   <entry>
     <title>GNU/Linux的一些操作（基于ubuntu）</title>

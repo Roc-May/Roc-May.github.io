@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>shell脚本各种符号的含义</title>
+      <link href="2021/08/30/shell-jiao-ben-ge-chong-fu-hao-de-han-yi/"/>
+      <url>2021/08/30/shell-jiao-ben-ge-chong-fu-hao-de-han-yi/</url>
+      
+        <content type="html"><![CDATA[<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h3 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h3><pre class=" language-bash"><code class="language-bash">$$Shell本身的PID（ProcessID）<span class="token variable">$!</span>Shell最后运行的后台Process的PID<span class="token variable">$?</span>最后运行的命令的结束代码（返回值）$-使用Set命令设定的Flag一览<span class="token variable">$*</span>所有参数列表。如<span class="token string">"<span class="token variable">$*</span>"</span>用「<span class="token string">"」括起来的情况、以"</span><span class="token variable">$1</span> <span class="token variable">$2</span> … <span class="token variable">$n</span><span class="token string">"的形式输出所有参数。<span class="token variable">$@</span>所有参数列表。如"</span><span class="token variable">$@</span><span class="token string">"用「"</span>」括起来的情况、以<span class="token string">"<span class="token variable">$1</span>"</span> <span class="token string">"<span class="token variable">$2</span>"</span> … <span class="token string">"<span class="token variable">$n</span>"</span> 的形式输出所有参数。$<span class="token comment" spellcheck="true">#</span>添加到Shell的参数个数<span class="token variable">$0</span>Shell本身的文件名<span class="token variable">$1</span>～<span class="token variable">$n</span>添加到Shell的各参数值。<span class="token variable">$1</span>是第1参数、<span class="token variable">$2</span>是第2参数…</code></pre><h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><pre class=" language-bash"><code class="language-bash">$ <span class="token function">cat</span> <span class="token operator">></span> <span class="token function">file</span><span class="token comment" spellcheck="true">#!/bin/bash</span><span class="token keyword">echo</span> <span class="token string">"number: <span class="token variable">$#</span>"</span><span class="token keyword">echo</span> <span class="token string">"first_arg: <span class="token variable">$1</span>"</span><span class="token keyword">echo</span> <span class="token string">"second_arg: <span class="token variable">$2</span>"</span><span class="token keyword">echo</span> <span class="token string">"all_arg: <span class="token variable">$@</span>"</span></code></pre><h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><pre class=" language-bash"><code class="language-bash">$ <span class="token function">file</span> a b cnumber: 3first_arg: asecond_arg: ball_arg: c</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> bash </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GNU/Linux的一些操作（基于ubuntu）</title>
       <link href="2021/08/19/gnu-linux-de-yi-xie-cao-zuo-ji-yu-ubuntu/"/>
       <url>2021/08/19/gnu-linux-de-yi-xie-cao-zuo-ji-yu-ubuntu/</url>
