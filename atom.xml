@@ -6,7 +6,7 @@
   <link href="https://roc-may.github.io/atom.xml" rel="self"/>
   
   <link href="https://roc-may.github.io/"/>
-  <updated>2021-08-30T03:58:36.314Z</updated>
+  <updated>2021-08-31T11:08:13.738Z</updated>
   <id>https://roc-may.github.io/</id>
   
   <author>
@@ -15,6 +15,65 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>sed&amp;awk的一些常用命令</title>
+    <link href="https://roc-may.github.io/2021/08/31/sed-awk-de-yi-xie-chang-yong-ming-ling/"/>
+    <id>https://roc-may.github.io/2021/08/31/sed-awk-de-yi-xie-chang-yong-ming-ling/</id>
+    <published>2021-08-31T11:08:13.000Z</published>
+    <updated>2021-08-31T11:08:13.738Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Virtuoso61X修改默认的VI编辑器</title>
+    <link href="https://roc-may.github.io/2021/08/31/virtuoso61x-xiu-gai-mo-ren-de-vi-bian-ji-qi/"/>
+    <id>https://roc-may.github.io/2021/08/31/virtuoso61x-xiu-gai-mo-ren-de-vi-bian-ji-qi/</id>
+    <published>2021-08-31T11:06:49.000Z</published>
+    <updated>2021-08-31T15:39:02.032Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;操作步骤&quot;&gt;&lt;a href=&quot;#操作步骤&quot; class=&quot;headerlink&quot; title=&quot;操作步骤&quot;&gt;&lt;/a&gt;操作步骤&lt;/h3&gt;&lt;h4 id=&quot;1-进入打开Virtuoso的文件夹下&quot;&gt;&lt;a href=&quot;#1-进入打开Virtuoso的文件夹下&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Virtuoso" scheme="https://roc-may.github.io/tags/Virtuoso/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一天5个Matlab程序[1]</title>
+    <link href="https://roc-may.github.io/2021/08/30/yi-tian-5-ge-matlab-cheng-xu-1/"/>
+    <id>https://roc-may.github.io/2021/08/30/yi-tian-5-ge-matlab-cheng-xu-1/</id>
+    <published>2021-08-30T05:58:43.000Z</published>
+    <updated>2021-08-31T05:00:54.884Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h2&gt;&lt;h3 id=&quot;代码&quot;&gt;&lt;a href=&quot;#代码&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Matlab" scheme="https://roc-may.github.io/tags/Matlab/"/>
+    
+  </entry>
   
   <entry>
     <title>shell脚本各种符号的含义</title>
@@ -67,14 +126,14 @@
     <link href="https://roc-may.github.io/2021/08/16/virtuoso61x-zhong-zuo-ams-fang-zhen-ji-lu/"/>
     <id>https://roc-may.github.io/2021/08/16/virtuoso61x-zhong-zuo-ams-fang-zhen-ji-lu/</id>
     <published>2021-08-16T09:42:21.000Z</published>
-    <updated>2021-08-16T11:36:52.205Z</updated>
+    <updated>2021-09-02T06:34:28.351Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h2 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h2&gt;&lt;h3 id=&quot;记录&quot;&gt;&lt;a href=&quot;#记录&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;h2 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h2&gt;&lt;h3 id=&quot;记录&quot;&gt;&lt;a href=&quot;#记录&quot; class=&quot;headerlink&quot; title=&quot;记录&quot;&gt;&lt;/a&gt;记录&lt;/h3&gt;&lt;h4</summary>
         
       
     
