@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="musics, Gxp">
+    <meta name="keywords" content="Gxp">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>musics | Gxp&#39;s blogs</title>
+    <title>Gxp&#39;s blogs</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -263,29 +263,190 @@
 
 </header>
 
-    <!-- 添加网易云我喜欢的歌曲模块 -->
-<p>网易云2019年度歌单top10</p>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayedist/APlayer.min.css">
-<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayemin.js"></script>
-<!-- require MetingJS -->
-<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Metinmin.js"></script>
-  <meting-js style="margin-top: 1.5rem;width: auto;height: auto"
-  server="tencent"
-  type="playlist"
-  id="7634442256"
-  order= "random"
-  theme="#ad7a86"
-  loop="all"
-  autoplay="false"
-  storageName="aplayer-setting"
-  hideLrc= "false"
-  >
-  </meting-js>
-  <style>
-      .aplayer{
-          margin: 1.5rem 0;
-      }              
-  </style>
+    
+    <div class="bg-cover pd-header about-cover">
+    <div class="container">
+    <div class="row">
+    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
+        <div class="brand">
+            <div class="title center-align">
+                
+                 hello 
+                
+            </div>
+
+            <div class="description center-align">
+                
+                <span id="subtitle"></span>
+                <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+                <script>
+                    var typed = new Typed("#subtitle", {
+                        strings: [ 
+                            
+                                "认识自己是一个悲伤的过程",
+                            
+                                "And Never have I felt so deeply at one and the same time so detached from myself and so present in the World.",
+                            
+                        ],
+                        startDelay: 300,
+                        typeSpeed: 90,
+                        loop: true,
+                        backSpeed: 50,
+                        showCursor: true
+                    });
+                </script>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // 每天切换 banner 图.  Switch banner image every day.
+    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
+    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+</script>
+
+
+    </div>
+</div>
+
+
+<main class="content">
+
+    
+
+    
+
+    <!-- 所有文章卡片 -->
+    <article id="articles" class="container articles">
+        <div class="row article-row">
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2021/08/16/ji-yu-python-de-wen-jian-chuan-shu-zhu-shou/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="基于python的文件传输助手">
+                            
+                            <span class="card-title">基于python的文件传输助手</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                目录操作环境python3.6+ubuntu18.04
+操作方法终端中输入python3 -m http.server（写python3是为了避免在系统同时存在python2和python3时，和python2冲突）打开手机浏览器，网址栏输
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                Roc-May
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/python%E3%80%81%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93/">
+                            <span class="chip bg-color">python、文件传输</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2021/08/16/jiang-csv-zhuan-wei-dui-ying-de-hui-du-tu/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="将csv转为对应的灰度图">
+                            
+                            <span class="card-title">将csv转为对应的灰度图</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                目录前述听着好像有点多余，原本就是要把灰度图转为csv来读取。。
+代码代码功能详见注释
+import numpy as np
+import os
+from PIL import Image
+import cv2
+import matplot
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                Roc-May
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/python/">
+                            <span class="chip bg-color">python</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </article>
+
+</main>
+
+
+<div class="container paging">
+    <div class="row">
+        <div class="col s6 m4 l4">
+            
+            <a href="/"
+               class="left btn-floating btn-large waves-effect waves-light bg-color">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            
+        </div>
+        <div class="page-info col m4 l4 hide-on-small-only">
+            <div class="center-align b-text-gray">2 / 2</div>
+        </div>
+        <div class="col s6 m4 l4">
+            
+            <a class="right btn-floating btn-large disabled">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            
+        </div>
+    </div>
+</div>
+
+
+
 
     <footer class="page-footer bg-color">
     
