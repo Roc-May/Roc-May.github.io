@@ -12,6 +12,12 @@
       
       
       
+        <tags>
+            
+            <tag> Matlab </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -44,6 +50,12 @@
       
       
       
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -57,6 +69,12 @@
       
       
       
+        <tags>
+            
+            <tag> Matlab </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -69,6 +87,12 @@
         <content type="html"><![CDATA[<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h4 id="6-sed-替换命令语法"><a href="#6-sed-替换命令语法" class="headerlink" title="6.sed 替换命令语法"></a>6.sed 替换命令语法</h4><p>sed ‘[address-range|pattern-range] s/original-string/replacement-string/[substitute-flags]’ input file </p><p>上面提到的语法为：  address-range 或 pattern-range(即地址范围和模式范围)是可选的。如果没有指 定，那么 sed 将在所有行上进行替换。  s 即执行替换命令 substitute  original-string 是被 sed 搜索然后被替换的字符串，它可以是一个正则表达式  replacement-string 替换后的字符串  substitute-flags 是可选的，下面会具体解释 </p><p>请谨记原始输入文件不会被修改，sed 只在模式空间中执行替换命令，然后输出模式空间的内容。</p><p>下面是一些简单的替换示例（替换的部分用黑体标明）<br>用 Director 替换所有行中的 Manager: </p><pre class=" language-bash"><code class="language-bash">$ <span class="token function">sed</span> <span class="token string">'s/Manager/Director/'</span> employee.txt 101,John Doe,CEO 102,Jason Smith,IT Director 103,Raj Reddy,Sysadmin 104,Anand Ram,Developer 105,Jane Miller,Sales Director </code></pre><p>只把包含 Sales 的行中的 Manager 替换为 Director: </p><pre class=" language-bash"><code class="language-bash">$ <span class="token function">sed</span> <span class="token string">'/Sales/s/Manager/Director/'</span> employee.txt 101,John Doe,CEO 102,Jason Smith,IT Manager  103,Raj Reddy,Sysadmin 104,Anand Ram,Developer 105,Jane Miller,Sales Director <span class="token comment" spellcheck="true">#注意：本例由于使用了地址范围限制，所以只有一个Manager被替换了</span></code></pre><h4 id="7-全局标志-g"><a href="#7-全局标志-g" class="headerlink" title="7.全局标志 g"></a>7.全局标志 g</h4><p>g 代表全局(global) 默认情况下，sed 至会替换每行中第一次出现的 original-string。如果你要 替换每行中出现的所有 original-string,就需要使用 g </p><p>用大写 A 替换第一次出现的小写字母 a： </p><pre class=" language-bash"><code class="language-bash">$ <span class="token function">sed</span> <span class="token string">'s/a/A/'</span> employee.txt 101,John Doe,CEO 102,JAson Smith,IT Manager 103,RAj Reddy,Sysadmin 104,AnAnd Ram,Developer 105,JAne Miller,Sales Manager </code></pre><p>把所有小写字母 a 替换为大写字母 A： </p><pre class=" language-bash"><code class="language-bash">$ <span class="token function">sed</span> <span class="token string">'s/a/A/g'</span> employee.txt 101,John Doe,CEO 102,JAson Smith,IT MAnAger 103,RAj Reddy,SysAdmin 104,AnAnd RAm,Developer 105,JAne Miller,SAles MAnAger <span class="token comment" spellcheck="true">#注意：上述例子会在所有行上替换，因为没有指定地址范围。 </span></code></pre><h4 id="8-数字标志-1-2-3-…"><a href="#8-数字标志-1-2-3-…" class="headerlink" title="8.数字标志(1,2,3 ….)"></a>8.数字标志(1,2,3 ….)</h4><p>使用数字可以指定 original-string 出现的次序。只有第 n 次出现的 original-string 才会触发替 换。每行的数字从 1 开始，最大为 512。<br>比如/11 会替换每行中第 11 次出现的 original-string<br>下面是几个例子： 把第二次出现的小写字母 a 替换为大写字母 A： </p><pre class=" language-bash"><code class="language-bash">$ <span class="token function">sed</span> <span class="token string">'s/a/A/2'</span> employee.txt 101,John Doe,CEO 102,Jason Smith,IT MAnager 103,Raj Reddy,SysAdmin 104,Anand RAm,Developer 105,Jane Miller,SAles Manager </code></pre><p>为了方面下面示例，请先建立如下文件：</p><pre class=" language-bash"><code class="language-bash">$ vim substitute-locate.txt <span class="token function">locate</span> <span class="token function">command</span> is used to <span class="token function">locate</span> files <span class="token function">locate</span> <span class="token function">command</span> uses database to <span class="token function">locate</span> files <span class="token function">locate</span> <span class="token function">command</span> can also use regex <span class="token keyword">for</span> searching </code></pre><p>使用刚才建立的文件，把每行中第二次出现的 locate 替换为 find: </p><pre class=" language-bash"><code class="language-bash">$ <span class="token function">sed</span> <span class="token string">'s/locate/find/2'</span> substitute-locate.txt <span class="token function">locate</span> <span class="token function">command</span> is used to <span class="token function">find</span> files <span class="token function">locate</span> <span class="token function">command</span> uses database to <span class="token function">find</span> files <span class="token function">locate</span> <span class="token function">command</span> can also use regex <span class="token keyword">for</span> searching <span class="token comment" spellcheck="true">#注意：第 3 行中 locate 只出现了一次，所以没有替换任何内容 </span></code></pre><h4 id="9-打印标志-p-print"><a href="#9-打印标志-p-print" class="headerlink" title="9.打印标志 p(print)"></a>9.打印标志 p(print)</h4><p>命令 p 代表 print。当替换操作完成后，打印替换后的行。与其他打印命令类似，sed 中比较 有用的方法是和-n 一起使用以抑制默认的打印操作。 </p><p>只打印替换后的行： </p><pre class=" language-bash"><code class="language-bash">$ <span class="token function">sed</span> -n <span class="token string">'s/John/Johnny/p'</span> employee.txt 101,Johnny Doe,CEO </code></pre><p>在之前的数字标志的例子中，使用/2 来替换第二次出现的 locate。第 3 行中 locate 只出现了 一次，所以没有替换任何内容。使用 p 标志可以只打印替换过的两行.<br>把每行中第二次出现的 locate 替换为 find 并打印出来： </p><pre class=" language-bash"><code class="language-bash">$ <span class="token function">sed</span> -n <span class="token string">'s/locate/find/2p'</span> substitute-locate.txt <span class="token function">locate</span> <span class="token function">command</span> is used to <span class="token function">find</span> files locate <span class="token function">command</span> uses database to <span class="token function">find</span> files </code></pre><h4 id="10-写标志-w"><a href="#10-写标志-w" class="headerlink" title="10.写标志 w"></a>10.写标志 w</h4><p>标志 w 代表 write。当替换操作执行成功后，它把替换后的结果保存的文件中。多数人更倾 向于使用 p 打印内容，然后重定向到文件中。为了对 sed 标志有个完整的描述，在这里把这 个标志也提出来了。<br>只把替换后的内容写到 output.txt 中: </p><pre class=" language-bash"><code class="language-bash">$ <span class="token function">sed</span> -n <span class="token string">'s/John/Johnny/w output.txt'</span> employee.txt $ <span class="token function">cat</span> output.txt 101,Johnny Doe,CEO <span class="token comment" spellcheck="true">#和之前使用的命令 p 一样，使用 w 会把替换后的内容保存到文件 output.txt 中。 </span></code></pre><p>把每行第二次出现的 locate 替换为 find，把替换的结果保存到文件中，同时显示输入文件所有内容： </p><pre class=" language-bash"><code class="language-bash">$ <span class="token function">sed</span> <span class="token string">'s/locate/find/2w output.txt'</span> substitute-locate.txt <span class="token function">locate</span> <span class="token function">command</span> is used to <span class="token function">find</span> files <span class="token function">locate</span> <span class="token function">command</span> uses database to <span class="token function">find</span> files <span class="token function">locate</span> <span class="token function">command</span> can also use regex <span class="token keyword">for</span> searching </code></pre><pre class=" language-bash"><code class="language-bash">$ <span class="token function">cat</span> output.txt <span class="token function">locate</span> <span class="token function">command</span> is used to <span class="token function">find</span> files <span class="token function">locate</span> <span class="token function">command</span> uses database to <span class="token function">find</span> files </code></pre>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> sed&amp;awk, 字符流处理 </tag>
+            
+        </tags>
       
     </entry>
     
